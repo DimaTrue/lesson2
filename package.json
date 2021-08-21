@@ -16,5 +16,10 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "arrowParens": "avoid",
+    "singleQuote": true
   }
 }

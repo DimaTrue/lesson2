@@ -1,0 +1,31 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link
+      rel='stylesheet'
+      href='https://cdn.jsdelivr.net/npm/uikit@3.7.2/dist/css/uikit.min.css'
+    />
+    <title>Error</title>
+  </head>
+  <body>
+    <div class='uk-container uk-form-width-xsmall'>
+      <div
+        class='uk-card uk-card-secondary uk-card-body uk-position-top uk-text-center'
+      >
+        <h1 class='uk-heading-xlarge'>Error</h1>
+      </div>
+
+      <div class='uk-position-center uk-width-expand' uk-grid>
+        <p class='uk-label-danger uk-text-center uk-text-large'>
+          {{errorMessage}}
+        </p>
+
+        <div class='uk-margin uk-text-center'>
+          <a class='uk-link-heading' href='{{link}}'>{{title}}</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <link
+      rel='stylesheet'
+      href='https://cdn.jsdelivr.net/npm/uikit@3.7.2/dist/css/uikit.min.css'
+    />
+    <title>Users list</title>
+  </head>
+  <body>
+    <div class='uk-text-center uk-column-1@xl' uk-grid>
+      <div class='uk-card uk-card-primary uk-card-body'>
+        <h1 class='uk-heading-xlarge'>Users list</h1>
+      </div>
+      <dl>
+        {{#each users}}
+          <dt>
+            <div class='uk-card uk-card-hover uk-card-body uk-column-1-3@m'>
+              <div>
+                <h2 class='uk-card-title'>Name: {{this.name}}</h2>
+                <h2 class='uk-card-title'>Age: {{this.age}}</h2>
+              </div>
+              <button
+                type='button'
+                onclick='handleOnclick({{this.user_id}})'
+                class='uk-button uk-button-default'
+              >Show more details</button>
+            </div>
+          </dt>
+        {{/each}}
+      </dl>
+    </div>
+    {{! prettier-ignore }}
+    <script>
+      const handleOnclick = async id => {
+        try{ 
+          const result = await fetch(`/users/${id}`, {
+            method: 'GET',
+            params: { user_id: id },
+          });
+          const parsedRes = await result.text();
+          document.open();
+          document.write(parsedRes);
+          document.close();
+          history.pushState(null,null,`/users/${id}`)
+        } catch (err) {
+          console.log(err);
+        }
+      }; 
+    </script>
+    {{! prettier-ignore }}
+  </body>
+</html>
