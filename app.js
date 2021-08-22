@@ -2,9 +2,9 @@ const express = require('express');
 const hbs = require('express-handlebars');
 const path = require('path');
 
-const { getParsedUsers, addNewUserToJson } = require('./helpers/fsHelper');
-const regExpHelper = require('./helpers/stringValidation');
+const { addNewUserToJson, getParsedUsers } = require('./helpers/fsHelper');
 const { PORT } = require('./configs/portConfig');
+const regExpHelper = require('./helpers/stringValidation');
 const statusCodes = require('./configs/statusCodes.enum');
 
 const app = express();
@@ -27,8 +27,6 @@ app.post('/auth', async (req, res) => {
       link: '/register',
       title: 'To register page',
     });
-
-    return;
   };
 
   try {

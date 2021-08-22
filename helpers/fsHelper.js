@@ -1,7 +1,7 @@
-const fs = require("fs/promises");
-const path = require("path");
+const fs = require('fs/promises');
+const path = require('path');
 
-const pathToUsers = path.join(__dirname, "../dataBase/users.json");
+const pathToUsers = path.join(__dirname, '../dataBase/users.json');
 
 module.exports = {
   getParsedUsers: async () => {
