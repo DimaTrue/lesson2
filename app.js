@@ -98,8 +98,10 @@ app.get('/users', async (req, res) => {
 
 app.get('/users/:user_id', async (req, res) => {
   const { user_id } = req.params;
+  const userIdInt = Number(user_id);
   const users = await getParsedUsers();
-  res.render('user', { user: users[user_id] });
+  const user = users.find(item => item.user_id === userIdInt);
+  res.render('user', { user });
 });
 
 app.get('/login', (req, res) => {
