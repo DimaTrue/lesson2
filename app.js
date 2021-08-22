@@ -3,9 +3,27 @@ const hbs = require('express-handlebars');
 const path = require('path');
 
 const { addNewUserToJson, getParsedUsers } = require('./helpers/fsHelper');
+const { BAD_REQUEST } = require('./configs/statusCodes.enum');
 const { PORT } = require('./configs/portConfig');
 const regExpHelper = require('./helpers/stringValidation');
-const statusCodes = require('./configs/statusCodes.enum');
+const { renderErrorPage } = require('./helpers/sendErrorPage');
+const {
+  AUTH,
+  REGISTER,
+  USERS,
+  SIGNUP,
+  LOGIN,
+} = require('./configs/routesConstants');
+const {
+  EMAIL_ALREADY_EXIST,
+  INVALID_ID,
+  PAGE_NOT_FOUND,
+  WRONG_LOGIN,
+  WRONG_SIGNUP,
+  TO_LOGIN,
+  TO_USERS,
+  TO_SIGNUP,
+} = require('./configs/stringConstants');
 
 const app = express();
 const staticPath = path.join(__dirname, 'static');
@@ -17,16 +35,10 @@ app.set('view engine', '.hbs');
 app.engine('.hbs', hbs({ defaultLayout: false }));
 app.set('views', staticPath);
 
-app.post('/auth', async (req, res) => {
+app.post(AUTH, async (req, res) => {
   const { email, password } = req.body;
-
   const sendErrorPage = () => {
-    res.status(statusCodes.BAD_REQUEST).render('errorPage', {
-      errorMessage:
-        'Invalid credentials. Please check your email, password and try again. Or register',
-      link: '/register',
-      title: 'To register page',
-    });
+    renderErrorPage(res, BAD_REQUEST, WRONG_LOGIN, REGISTER, TO_SIGNUP);
   };
 
   try {
@@ -35,18 +47,16 @@ app.post('/auth', async (req, res) => {
       const user = users.find(
         user => user.email === email && user.password === password
       );
-      user ? res.redirect('/users') : sendErrorPage();
-
-      return;
+      user ? res.redirect(USERS) : sendErrorPage();
+    } else {
+      sendErrorPage();
     }
-
-    sendErrorPage();
   } catch (err) {
     console.log(err);
   }
 });
 
-app.post('/signup', async (req, res) => {
+app.post(SIGNUP, async (req, res) => {
   const { name, age, email, password } = req.body;
 
   try {
@@ -55,12 +65,7 @@ app.post('/signup', async (req, res) => {
       const isUserExist = users.find(user => user.email === email);
 
       if (isUserExist) {
-        res.status(statusCodes.BAD_REQUEST).render('errorPage', {
-          errorMessage:
-            'This email already exists. Please check your email and try again. Or login',
-          link: '/login',
-          title: 'To login page',
-        });
+        renderErrorPage(res, BAD_REQUEST, EMAIL_ALREADY_EXIST, LOGIN, TO_LOGIN);
 
         return;
       } else {
@@ -73,14 +78,9 @@ app.post('/signup', async (req, res) => {
         });
       }
 
-      res.redirect('/login');
+      res.redirect(LOGIN);
     } else {
-      res.status(statusCodes.BAD_REQUEST).render('errorPage', {
-        errorMessage:
-          'Invalid credentials. Please check your name, age, email, password and try again.',
-        link: '/login',
-        title: 'To login page',
-      });
+      renderErrorPage(res, BAD_REQUEST, WRONG_SIGNUP, LOGIN, TO_LOGIN);
 
       return;
     }
@@ -89,33 +89,31 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-app.get('/users', async (req, res) => {
+app.get(USERS, async (req, res) => {
   const users = await getParsedUsers();
   res.render('users', { users });
 });
 
-app.get('/users/:user_id', async (req, res) => {
+app.get(`${USERS}/:user_id`, async (req, res) => {
   const { user_id } = req.params;
   const userIdInt = Number(user_id);
   const users = await getParsedUsers();
   const user = users.find(item => item.user_id === userIdInt);
-  res.render('user', { user });
+  user
+    ? res.render('user', { user })
+    : renderErrorPage(res, BAD_REQUEST, INVALID_ID, USERS, TO_USERS);
 });
 
-app.get('/login', (req, res) => {
+app.get(LOGIN, (req, res) => {
   res.render('login');
 });
 
-app.get('/register', (req, res) => {
+app.get(REGISTER, (req, res) => {
   res.render('register');
 });
 
 app.use((req, res, next) => {
-  res.status(statusCodes.BAD_REQUEST).render('errorPage', {
-    errorMessage: 'Page not found',
-    link: '/login',
-    title: 'To Login page',
-  });
+  renderErrorPage(res, BAD_REQUEST, PAGE_NOT_FOUND, LOGIN, TO_LOGIN);
 });
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
