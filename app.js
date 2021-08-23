@@ -3,7 +3,11 @@ const hbs = require('express-handlebars');
 const path = require('path');
 
 const { addNewUserToJson, getParsedUsers } = require('./helpers/fsHelper');
-const { BAD_REQUEST } = require('./configs/statusCodes.enum');
+const {
+  NOT_FOUND,
+  BAD_REQUEST,
+  CONFLICT,
+} = require('./configs/statusCodes.enum');
 const { PORT } = require('./configs/portConfig');
 const regExpHelper = require('./helpers/stringValidation');
 const { renderErrorPage } = require('./helpers/sendErrorPage');
@@ -65,7 +69,7 @@ app.post(SIGNUP, async (req, res) => {
       const isUserExist = users.find(user => user.email === email);
 
       if (isUserExist) {
-        renderErrorPage(res, BAD_REQUEST, EMAIL_ALREADY_EXIST, LOGIN, TO_LOGIN);
+        renderErrorPage(res, CONFLICT, EMAIL_ALREADY_EXIST, LOGIN, TO_LOGIN);
 
         return;
       } else {
@@ -81,8 +85,6 @@ app.post(SIGNUP, async (req, res) => {
       res.redirect(LOGIN);
     } else {
       renderErrorPage(res, BAD_REQUEST, WRONG_SIGNUP, LOGIN, TO_LOGIN);
-
-      return;
     }
   } catch (err) {
     console.log(err);
@@ -113,7 +115,7 @@ app.get(REGISTER, (req, res) => {
 });
 
 app.use((req, res, next) => {
-  renderErrorPage(res, BAD_REQUEST, PAGE_NOT_FOUND, LOGIN, TO_LOGIN);
+  renderErrorPage(res, NOT_FOUND, PAGE_NOT_FOUND, LOGIN, TO_LOGIN);
 });
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
