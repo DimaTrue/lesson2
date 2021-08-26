@@ -1,19 +1,18 @@
 const regExpHelper = require('../helpers/stringValidation');
 const { addNewUserToJson, getParsedUsers } = require('../services/user.service');
-const { renderErrorPage } = require('../helpers/sendErrorPage');
-const { REGISTER, USERS, LOGIN } = require('../configs/routesConstants');
+const { sendError } = require('../helpers/sendError');
 const {
     BAD_REQUEST,
     CONFLICT,
-    INTERNAL
+    INTERNAL,
+    CREATED
 } = require('../configs/statusCodes.enum');
 const {
     EMAIL_ALREADY_EXIST,
     WRONG_LOGIN,
     WRONG_SIGNUP,
-    TO_LOGIN,
-    TO_SIGNUP,
-    SOME_WRONG
+    SOME_WRONG,
+    ACCOUNT_CREATED
 } = require('../configs/stringConstants');
 
 module.exports = {
@@ -29,16 +28,11 @@ module.exports = {
                 const isUserExist = users.find((user) => user.email === email);
 
                 if (isUserExist) {
-                    renderErrorPage(
-                        res,
-                        CONFLICT,
-                        EMAIL_ALREADY_EXIST,
-                        LOGIN,
-                        TO_LOGIN
-                    );
+                    sendError(res, CONFLICT, EMAIL_ALREADY_EXIST);
 
                     return;
                 }
+
                 addNewUserToJson(users, {
                     user_id: users.length + 1,
                     name,
@@ -47,12 +41,12 @@ module.exports = {
                     password,
                 });
 
-                res.redirect(LOGIN);
+                res.status(CREATED).json(ACCOUNT_CREATED);
             } else {
-                renderErrorPage(res, BAD_REQUEST, WRONG_SIGNUP, LOGIN, TO_LOGIN);
+                sendError(res, BAD_REQUEST, WRONG_SIGNUP);
             }
         } catch (err) {
-            renderErrorPage(res, INTERNAL, `${SOME_WRONG} ${err.message}`, LOGIN, TO_LOGIN);
+            sendError(res, INTERNAL, `${SOME_WRONG} ${err.message}`);
         }
     },
 
@@ -67,21 +61,16 @@ module.exports = {
                 );
 
                 if (user) {
-                    return res.redirect(USERS);
+                    res.redirect('/users');
+
+                    return;
                 }
             }
-            renderErrorPage(res, BAD_REQUEST, WRONG_LOGIN, REGISTER, TO_SIGNUP);
+
+            sendError(res, BAD_REQUEST, WRONG_LOGIN);
         } catch (err) {
-            renderErrorPage(res, INTERNAL, `${SOME_WRONG} ${err.message}`, LOGIN, TO_LOGIN);
+            sendError(res, INTERNAL, `${SOME_WRONG} ${err.message}`);
         }
-    },
-
-    renderRegisterPageController: (req, res) => {
-        res.render('register');
-    },
-
-    renderLoginPageController: (req, res) => {
-        res.render('login');
     }
 
 };

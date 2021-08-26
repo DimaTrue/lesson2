@@ -7,8 +7,6 @@ module.exports = {
     'This email already exists. Please check your email and try again. Or login',
     INVALID_ID: 'Invalid id. There is no user with this id.',
     PAGE_NOT_FOUND: 'Page not found',
-    TO_SIGNUP: 'To register page',
-    TO_LOGIN: 'To login page',
-    TO_USERS: 'To users list',
-    SOME_WRONG: 'Oops, something went wrong. Please, contact our technical support team.'
+    SOME_WRONG: 'Oops, something went wrong. Please, contact our technical support team.',
+    ACCOUNT_CREATED: 'Your account successfully created! Thanks for signing up.'
 };

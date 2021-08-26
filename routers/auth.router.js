@@ -1,12 +1,6 @@
 const router = require('express').Router();
 
-const {
-    renderLoginPageController, renderRegisterPageController, loginController, signUpController
-} = require('../controllers');
-
-router.get('/login', renderLoginPageController);
-
-router.get('/register', renderRegisterPageController);
+const { loginController, signUpController } = require('../controllers');
 
 router.post('/auth', loginController);
 
