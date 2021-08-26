@@ -1,14 +1,19 @@
 const { sendError } = require('../helpers/sendError');
-const { getParsedUsers } = require('../services/user.service');
 const { BAD_REQUEST, INTERNAL } = require('../configs/statusCodes.enum');
 const { INVALID_ID, SOME_WRONG } = require('../configs/stringConstants');
+const { User } = require('../model/user.model');
 
 module.exports = {
 
     getUsersListController: async (req, res) => {
         try {
-            const users = await getParsedUsers();
-            res.json(users);
+            const users = await User.find({});
+            const responseUsersArr = users.map((user) => ({
+                name: user.name,
+                age: user.age,
+                id: user._id
+            }));
+            res.json(responseUsersArr);
         } catch (err) {
             sendError(res, INTERNAL, `${SOME_WRONG} ${err.message}`);
         }
@@ -16,14 +21,17 @@ module.exports = {
 
     getUserController: async (req, res) => {
         const { user_id } = req.params;
-        const userIdInt = +user_id;
 
         try {
-            const users = await getParsedUsers();
-            const user = users.find((item) => item.user_id === userIdInt);
+            const user = await User.findOne({ _id: user_id });
 
             if (user) {
-                res.json(user);
+                const responseUser = {
+                    name: user.name,
+                    age: user.age,
+                    id: user._id
+                };
+                res.json(responseUser);
 
                 return;
             }

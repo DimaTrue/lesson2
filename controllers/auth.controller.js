@@ -1,5 +1,4 @@
 const regExpHelper = require('../helpers/stringValidation');
-const { addNewUserToJson, getParsedUsers } = require('../services/user.service');
 const { sendError } = require('../helpers/sendError');
 const {
     BAD_REQUEST,
@@ -14,6 +13,7 @@ const {
     SOME_WRONG,
     ACCOUNT_CREATED
 } = require('../configs/stringConstants');
+const { User } = require('../model/user.model');
 
 module.exports = {
 
@@ -24,22 +24,19 @@ module.exports = {
 
         try {
             if (regExpHelper.checkIsValidRegister(name, age, email, password)) {
-                const users = await getParsedUsers();
-                const isUserExist = users.find((user) => user.email === email);
+                const isUserExists = await User.findOne({ email });
 
-                if (isUserExist) {
+                if (isUserExists) {
                     sendError(res, CONFLICT, EMAIL_ALREADY_EXIST);
 
                     return;
                 }
 
-                addNewUserToJson(users, {
-                    user_id: users.length + 1,
-                    name,
-                    age,
-                    email,
-                    password,
+                const user = new User({
+                    name, age, email, password
                 });
+
+                await user.save();
 
                 res.status(CREATED).json(ACCOUNT_CREATED);
             } else {
@@ -55,10 +52,7 @@ module.exports = {
 
         try {
             if (regExpHelper.checkIsValidLogin(email, password)) {
-                const users = await getParsedUsers();
-                const user = users.find(
-                    (usersItem) => usersItem.email === email && usersItem.password === password
-                );
+                const user = await User.findOne({ email });
 
                 if (user) {
                     res.redirect('/users');
