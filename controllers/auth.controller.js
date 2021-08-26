@@ -65,14 +65,12 @@ module.exports = {
                 const user = users.find(
                     (usersItem) => usersItem.email === email && usersItem.password === password
                 );
+
                 if (user) {
-                    res.redirect(USERS);
-                } else {
-                    renderErrorPage(res, BAD_REQUEST, WRONG_LOGIN, REGISTER, TO_SIGNUP);
+                    return res.redirect(USERS);
                 }
-            } else {
-                renderErrorPage(res, BAD_REQUEST, WRONG_LOGIN, REGISTER, TO_SIGNUP);
             }
+            renderErrorPage(res, BAD_REQUEST, WRONG_LOGIN, REGISTER, TO_SIGNUP);
         } catch (err) {
             renderErrorPage(res, INTERNAL, `${SOME_WRONG} ${err.message}`, LOGIN, TO_LOGIN);
         }
