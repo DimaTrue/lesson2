@@ -15,6 +15,7 @@ module.exports = {
             if (!regExpHelper.checkIsValidRegister(name, age, email, password)) {
                 throw new ErrorHandler(BAD_REQUEST, WRONG_SIGNUP);
             }
+
             next();
         } catch (err) {
             next(err);
@@ -28,6 +29,7 @@ module.exports = {
             if (!regExpHelper.checkIsValidLogin(email, password)) {
                 throw new ErrorHandler(BAD_REQUEST, WRONG_LOGIN);
             }
+
             next();
         } catch (err) {
             next(err);
