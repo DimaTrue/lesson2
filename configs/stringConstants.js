@@ -3,12 +3,23 @@ module.exports = {
     EMAIL_ALREADY_EXIST:
     'This email already exists. Please check your email and try again. Or login',
     FAIL_MONGO: 'Failed connection to MongoDb: ',
+    INVALID_AGE: 'Invalid age. Must be from 6 to 110. Please check your age and try again',
+    INVALID_CONTENT: 'Invalid content. Please check your content and try again',
+    INVALID_EMAIL: 'Invalid email. Please check your email and try again',
     INVALID_ID: 'Invalid id. There is no user with this id.',
+    INVALID_NAME: 'Invalid name. Please check your name and try again',
+    INVALID_PASSWORD:
+    'Invalid password. Must have at least 6 characters, one digit and a capital letter. Please check your password and try again',
+    INVALID_TITLE: 'Invalid title. Please check your title and try again',
     PAGE_NOT_FOUND: 'Page not found',
+    REQUIRED_AGE: 'Age is required',
+    REQUIRED_EMAIL: 'Email is required',
+    REQUIRED_NAME: 'Name is required',
+    REQUIRED_PASSWORD: 'Password is required',
     SERVER_RUNNING: '🚀 Server running on port:',
     SOME_WRONG: 'Oops, something went wrong. Please, contact our technical support team.',
     WRONG_LOGIN:
     'Invalid credentials. Please check your email, password and try again. Or register',
     WRONG_SIGNUP:
-    'Invalid credentials. Please check your name, age, email, password and try again.'
+    'Invalid credentials. Please check your name, age, email, password and try again.',
 };
