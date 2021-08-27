@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { OK } = require('../configs/statusCodes.enum');
 
 module.exports = {
 
@@ -13,7 +14,7 @@ module.exports = {
                 posts: user.posts
             }));
 
-            res.json({ users: responseUsersArr });
+            res.status(OK).json({ users: responseUsersArr });
         } catch (err) {
             next(err);
         }
@@ -21,7 +22,7 @@ module.exports = {
 
     getUserController: (req, res, next) => {
         try {
-            res.json({ user: req.user });
+            res.status(OK).json({ user: req.user });
         } catch (err) {
             next(err);
         }
@@ -31,7 +32,7 @@ module.exports = {
         try {
             await User.deleteOne({ _id: req.user.id });
 
-            res.json({ user: req.params.user_id });
+            res.status(OK).json({ user: req.params.user_id });
         } catch (err) {
             next(err);
         }
@@ -41,7 +42,7 @@ module.exports = {
         try {
             const user = await User.findOneAndUpdate({ _id: req.user.id }, req.body, { new: true });
 
-            res.json({ user });
+            res.status(OK).json({ user });
         } catch (err) {
             next(err);
         }

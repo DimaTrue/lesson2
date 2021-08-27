@@ -50,6 +50,22 @@ module.exports = {
         } catch (err) {
             next(err);
         }
-    }
+    },
+
+    isAccountExist: async (req, res, next) => {
+        try {
+            const { email = '' } = req.body;
+
+            const user = await User.findOne({ email: email.trim() });
+
+            if (!user) {
+                throw new ErrorHandler(BAD_REQUEST, WRONG_LOGIN);
+            }
+
+            next();
+        } catch (err) {
+            next(err);
+        }
+    },
 
 };

@@ -1,4 +1,5 @@
 const { Post, User } = require('../models');
+const { CREATED, OK } = require('../configs/statusCodes.enum');
 
 module.exports = {
 
@@ -6,7 +7,7 @@ module.exports = {
         try {
             const posts = await Post.find({});
 
-            res.json({ posts });
+            res.status(OK).json({ posts });
         } catch (err) {
             next(err);
         }
@@ -16,7 +17,7 @@ module.exports = {
         try {
             const posts = await Post.find({ owner: req.user._id });
 
-            res.json({ posts });
+            res.status(OK).json({ posts });
         } catch (err) {
             next(err);
         }
@@ -28,7 +29,7 @@ module.exports = {
 
             const post = await Post.findById(post_id);
 
-            res.json({ post });
+            res.status(OK).json({ post });
         } catch (err) {
             next(err);
         }
@@ -46,7 +47,7 @@ module.exports = {
                 { new: true, useFindAndModify: false }
             );
 
-            res.json({ post });
+            res.status(CREATED).json({ post });
         } catch (err) {
             next(err);
         }
@@ -64,7 +65,7 @@ module.exports = {
                 { new: true }
             );
 
-            res.json({ post: post_id });
+            res.status(OK).json({ post: post_id });
         } catch (err) {
             next(err);
         }
@@ -76,7 +77,7 @@ module.exports = {
 
             const updatedPost = await Post.findOneAndUpdate({ _id: post_id }, req.body, { new: true });
 
-            res.json({ post: updatedPost });
+            res.status(OK).json({ post: updatedPost });
         } catch (err) {
             next(err);
         }

@@ -1,6 +1,5 @@
-const { CREATED, BAD_REQUEST } = require('../configs/statusCodes.enum');
-const { ACCOUNT_CREATED, WRONG_LOGIN } = require('../configs/stringConstants');
-const ErrorHandler = require('../errors/ErrorHandler');
+const { CREATED, OK } = require('../configs/statusCodes.enum');
+const { ACCOUNT_CREATED } = require('../configs/stringConstants');
 const { User } = require('../models');
 
 module.exports = {
@@ -21,17 +20,9 @@ module.exports = {
         }
     },
 
-    loginController: async (req, res, next) => {
-        const { email = '' } = req.body;
-
+    loginController: (req, res, next) => {
         try {
-            const user = await User.findOne({ email: email.trim() });
-
-            if (!user) {
-                throw new ErrorHandler(BAD_REQUEST, WRONG_LOGIN);
-            }
-
-            res.redirect('/users');
+            res.status(OK).redirect('/users');
         } catch (err) {
             next(err);
         }

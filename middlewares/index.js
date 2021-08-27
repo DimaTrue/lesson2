@@ -1,7 +1,10 @@
 const { isUserByIdExist } = require('./user.middlewares');
-const { isEmailExist, isValidForm, isValidLogin } = require('./auth.middlewares');
+const {
+    isEmailExist, isValidForm, isValidLogin, isAccountExist
+} = require('./auth.middlewares');
 
 module.exports = {
+    isAccountExist,
     isEmailExist,
     isValidForm,
     isValidLogin,
