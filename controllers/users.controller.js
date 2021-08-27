@@ -1,11 +1,8 @@
-const { sendError } = require('../helpers/sendError');
-const { BAD_REQUEST, INTERNAL } = require('../configs/statusCodes.enum');
-const { INVALID_ID, SOME_WRONG } = require('../configs/stringConstants');
-const { User } = require('../model/user.model');
+const { User } = require('../models');
 
 module.exports = {
 
-    getUsersListController: async (req, res) => {
+    getUsersListController: async (req, res, next) => {
         try {
             const users = await User.find({});
             const responseUsersArr = users.map((user) => ({
@@ -13,32 +10,35 @@ module.exports = {
                 age: user.age,
                 id: user._id
             }));
-            res.json(responseUsersArr);
+            res.json({ users: responseUsersArr });
         } catch (err) {
-            sendError(res, INTERNAL, `${SOME_WRONG} ${err.message}`);
+            next(err);
         }
     },
 
-    getUserController: async (req, res) => {
-        const { user_id } = req.params;
-
+    getUserController: (req, res, next) => {
         try {
-            const user = await User.findOne({ _id: user_id });
-
-            if (user) {
-                const responseUser = {
-                    name: user.name,
-                    age: user.age,
-                    id: user._id
-                };
-                res.json(responseUser);
-
-                return;
-            }
-
-            sendError(res, BAD_REQUEST, INVALID_ID);
+            res.json({ user: req.user });
         } catch (err) {
-            sendError(res, INTERNAL, `${SOME_WRONG} ${err.message}`);
+            next(err);
+        }
+    },
+
+    deleteUserByIdController: async (req, res, next) => {
+        try {
+            await User.deleteOne({ _id: req.user.id });
+            res.json({ user: req.params.user_id });
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    updateUserByIdController: async (req, res, next) => {
+        try {
+            const user = await User.findOneAndUpdate({ _id: req.user.id }, req.body, { new: true });
+            res.json({ user });
+        } catch (err) {
+            next(err);
         }
     }
 

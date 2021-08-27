@@ -1,69 +1,39 @@
-const regExpHelper = require('../helpers/stringValidation');
-const { sendError } = require('../helpers/sendError');
-const {
-    BAD_REQUEST,
-    CONFLICT,
-    INTERNAL,
-    CREATED
-} = require('../configs/statusCodes.enum');
-const {
-    EMAIL_ALREADY_EXIST,
-    WRONG_LOGIN,
-    WRONG_SIGNUP,
-    SOME_WRONG,
-    ACCOUNT_CREATED
-} = require('../configs/stringConstants');
-const { User } = require('../model/user.model');
+const { CREATED, BAD_REQUEST } = require('../configs/statusCodes.enum');
+const { ACCOUNT_CREATED, WRONG_LOGIN } = require('../configs/stringConstants');
+const ErrorHandler = require('../errors/ErrorHandler');
+const { User } = require('../models');
 
 module.exports = {
 
-    signUpController: async (req, res) => {
+    signUpController: async (req, res, next) => {
         const {
             name, age, email, password
         } = req.body;
 
         try {
-            if (regExpHelper.checkIsValidRegister(name, age, email, password)) {
-                const isUserExists = await User.findOne({ email });
+            await User.create({
+                name, age, email, password
+            });
 
-                if (isUserExists) {
-                    sendError(res, CONFLICT, EMAIL_ALREADY_EXIST);
-
-                    return;
-                }
-
-                const user = new User({
-                    name, age, email, password
-                });
-
-                await user.save();
-
-                res.status(CREATED).json(ACCOUNT_CREATED);
-            } else {
-                sendError(res, BAD_REQUEST, WRONG_SIGNUP);
-            }
+            res.status(CREATED).json({ message: ACCOUNT_CREATED });
         } catch (err) {
-            sendError(res, INTERNAL, `${SOME_WRONG} ${err.message}`);
+            next(err);
         }
     },
 
-    loginController: async (req, res) => {
-        const { email, password } = req.body;
+    loginController: async (req, res, next) => {
+        const { email = '' } = req.body;
 
         try {
-            if (regExpHelper.checkIsValidLogin(email, password)) {
-                const user = await User.findOne({ email });
+            const user = await User.findOne({ email: email.trim() });
 
-                if (user) {
-                    res.redirect('/users');
-
-                    return;
-                }
+            if (!user) {
+                throw new ErrorHandler(BAD_REQUEST, WRONG_LOGIN);
             }
 
-            sendError(res, BAD_REQUEST, WRONG_LOGIN);
+            res.redirect('/users');
         } catch (err) {
-            sendError(res, INTERNAL, `${SOME_WRONG} ${err.message}`);
+            next(err);
         }
     }
 
