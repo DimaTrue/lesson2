@@ -2,11 +2,11 @@ const router = require('express').Router();
 
 const { loginController, signUpController } = require('../controllers');
 const {
-    isAccountExist, isEmailExist, isValidForm, isValidLogin
+    isAccountExist, isEmailExist, isValidUserData, isValidLogin
 } = require('../middlewares');
 
-router.post('/auth', isAccountExist, isValidLogin, loginController);
+router.post('/auth', isValidLogin, isAccountExist, loginController);
 
-router.post('/signup', isValidForm, isEmailExist, signUpController);
+router.post('/signup', isValidUserData, isEmailExist, signUpController);
 
 module.exports = router;

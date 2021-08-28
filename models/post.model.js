@@ -1,13 +1,12 @@
 const { Schema, model } = require('mongoose');
 
-const { validTextRegExp } = require('../helpers/stringValidation');
 const { INVALID_CONTENT, INVALID_TITLE } = require('../configs/stringConstants');
 
 const postSchema = new Schema({
     title: {
         type: String,
         validate: {
-            validator: (title) => validTextRegExp.test(title),
+            validator: (title) => title.length > 1 && title.length <= 30,
             message: () => INVALID_TITLE
         },
         required: true,
@@ -16,7 +15,7 @@ const postSchema = new Schema({
     content: {
         type: String,
         validate: {
-            validator: (content) => validTextRegExp.test(content),
+            validator: (content) => content.length > 1,
             message: () => INVALID_CONTENT
         },
         required: true,

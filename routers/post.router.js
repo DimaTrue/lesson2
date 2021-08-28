@@ -8,18 +8,20 @@ const {
     deleteUsersPostByIdController,
     editPostController
 } = require('../controllers');
-const { isUserByIdExist } = require('../middlewares');
+const {
+    isPostByIdExist, isValidPostData, isValidPostUpdate, isUserByIdExist
+} = require('../middlewares');
 
 router.get('/', getAllPostsController);
 
-router.get('/:post_id', getPostByIdController);
+router.get('/:post_id', isPostByIdExist, getPostByIdController);
 
 router.get('/by_user/:user_id', isUserByIdExist, getPostsListByUserController);
 
-router.post('/:user_id/create_post', isUserByIdExist, createPostController);
+router.post('/:user_id/create_post', isValidPostData, isUserByIdExist, createPostController);
 
-router.delete('/:user_id/:post_id', isUserByIdExist, deleteUsersPostByIdController);
+router.delete('/:user_id/:post_id', isUserByIdExist, isPostByIdExist, deleteUsersPostByIdController);
 
-router.put('/:user_id/:post_id', isUserByIdExist, editPostController);
+router.put('/:user_id/:post_id', isValidPostUpdate, isUserByIdExist, isPostByIdExist, editPostController);
 
 module.exports = router;

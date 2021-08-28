@@ -23,13 +23,9 @@ module.exports = {
         }
     },
 
-    getPostByIdController: async (req, res, next) => {
+    getPostByIdController: (req, res, next) => {
         try {
-            const { post_id } = req.params;
-
-            const post = await Post.findById(post_id);
-
-            res.status(OK).json({ post });
+            res.status(OK).json({ post: req.post });
         } catch (err) {
             next(err);
         }

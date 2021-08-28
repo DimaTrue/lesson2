@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const { validTextRegExp, validEmailRegExp, validPasswordRegExp } = require('../helpers/stringValidation');
+const { TEXT_REGEXP, EMAIL_REGEXP, PASSWORD_REGEXP } = require('../configs/constants');
 const roles = require('../configs/user-roles.enum');
 const {
     INVALID_AGE, INVALID_EMAIL, INVALID_NAME, INVALID_PASSWORD, REQUIRED_AGE, REQUIRED_EMAIL, REQUIRED_NAME, REQUIRED_PASSWORD
@@ -10,7 +10,7 @@ const userSchema = new Schema({
     name: {
         type: String,
         validate: {
-            validator: (name) => validTextRegExp.test(name),
+            validator: (name) => TEXT_REGEXP.test(name),
             message: () => INVALID_NAME
         },
         required: [
@@ -38,7 +38,7 @@ const userSchema = new Schema({
     email: {
         type: String,
         validate: {
-            validator: (email) => validEmailRegExp.test(email),
+            validator: (email) => EMAIL_REGEXP.test(email),
             message: () => INVALID_EMAIL
         },
         required: [
@@ -51,7 +51,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         validate: {
-            validator: (pass) => validPasswordRegExp.test(pass),
+            validator: (pass) => PASSWORD_REGEXP.test(pass),
             message: () => INVALID_PASSWORD
         },
         required: [
@@ -70,7 +70,8 @@ const userSchema = new Schema({
         enum: {
             values: Object.values(roles),
             message: '{VALUE} is not supported'
-        }
+        },
+        trim: true
     }
 }, { timestamps: true });
 
