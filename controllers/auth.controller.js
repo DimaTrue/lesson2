@@ -1,6 +1,7 @@
 const { CREATED, OK } = require('../configs/statusCodes.enum');
-const { ACCOUNT_CREATED } = require('../configs/stringConstants');
 const { User } = require('../models');
+const { passwordService } = require('../services');
+const { userNormalizator } = require('../utils');
 
 module.exports = {
 
@@ -10,19 +11,26 @@ module.exports = {
         } = req.body;
 
         try {
-            await User.create({
-                name, age, email, password
+            const hashPassword = await passwordService.createHash(password);
+
+            const user = await User.create({
+                name, age, email, password: hashPassword
             });
 
-            res.status(CREATED).json({ message: ACCOUNT_CREATED });
+            const normalizedUser = userNormalizator(user);
+            res.status(CREATED).json({ user: normalizedUser });
         } catch (err) {
             next(err);
         }
     },
 
-    loginController: (req, res, next) => {
+    loginController: async (req, res, next) => {
         try {
-            res.status(OK).redirect('/users');
+            const normalizedUser = userNormalizator(req.user);
+
+            await passwordService.comparePassword(req.body.password, req.user.password);
+
+            res.status(OK).json({ user: normalizedUser });
         } catch (err) {
             next(err);
         }

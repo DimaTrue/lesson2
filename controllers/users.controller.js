@@ -1,5 +1,6 @@
 const { User } = require('../models');
 const { OK } = require('../configs/statusCodes.enum');
+const { userNormalizator } = require('../utils');
 
 module.exports = {
 
@@ -7,12 +8,7 @@ module.exports = {
         try {
             const users = await User.find({});
 
-            const responseUsersArr = users.map((user) => ({
-                name: user.name,
-                age: user.age,
-                id: user._id,
-                posts: user.posts
-            }));
+            const responseUsersArr = users.map((user) => userNormalizator(user));
 
             res.status(OK).json({ users: responseUsersArr });
         } catch (err) {
@@ -22,7 +18,8 @@ module.exports = {
 
     getUserController: (req, res, next) => {
         try {
-            res.status(OK).json({ user: req.user });
+            const normalizedUser = userNormalizator(req.user);
+            res.status(OK).json({ user: normalizedUser });
         } catch (err) {
             next(err);
         }
@@ -32,7 +29,8 @@ module.exports = {
         try {
             await User.deleteOne({ _id: req.user.id });
 
-            res.status(OK).json({ user: req.params.user_id });
+            const normalizedUser = userNormalizator(req.user);
+            res.status(OK).json({ user: normalizedUser });
         } catch (err) {
             next(err);
         }
@@ -42,7 +40,9 @@ module.exports = {
         try {
             const user = await User.findOneAndUpdate({ _id: req.user.id }, req.body, { new: true });
 
-            res.status(OK).json({ user });
+            const normalizedUser = userNormalizator(user);
+
+            res.status(OK).json({ user: normalizedUser });
         } catch (err) {
             next(err);
         }

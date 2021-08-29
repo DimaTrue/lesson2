@@ -21,6 +21,7 @@ module.exports = {
     SERVER_RUNNING: '🚀 Server running on port:',
     SOME_WRONG: 'Oops, something went wrong. Please, contact our technical support team.',
     USER_NOT_FOUND: 'User not found.',
+    WRONG_CREDENTIALS: 'Invalid credentials',
     WRONG_LOGIN:
     'Invalid credentials. Please check your email, password and try again. Or register.',
     WRONG_SIGNUP:

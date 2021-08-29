@@ -58,6 +58,7 @@ const isAccountExist = async (req, res, next) => {
             throw new ErrorHandler(BAD_REQUEST, WRONG_LOGIN);
         }
 
+        req.user = user;
         next();
     } catch (err) {
         next(err);

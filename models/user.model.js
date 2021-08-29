@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const { TEXT_REGEXP, EMAIL_REGEXP, PASSWORD_REGEXP } = require('../configs/constants');
+const { TEXT_REGEXP, EMAIL_REGEXP } = require('../configs/constants');
 const roles = require('../configs/user-roles.enum');
 const {
     INVALID_AGE, INVALID_EMAIL, INVALID_NAME, INVALID_PASSWORD, REQUIRED_AGE, REQUIRED_EMAIL, REQUIRED_NAME, REQUIRED_PASSWORD
@@ -51,7 +51,7 @@ const userSchema = new Schema({
     password: {
         type: String,
         validate: {
-            validator: (pass) => PASSWORD_REGEXP.test(pass),
+            validator: (pass) => pass.length > 1,
             message: () => INVALID_PASSWORD
         },
         required: [
