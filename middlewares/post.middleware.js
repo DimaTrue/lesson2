@@ -1,8 +1,8 @@
 const ErrorHandler = require('../errors/ErrorHandler');
 const { Post } = require('../models');
 const { BAD_REQUEST, NOT_FOUND } = require('../configs/statusCodes.enum');
-const { WRONG_POST, POST_NOT_FOUND } = require('../configs/stringConstants');
-const { createPostValidator, updatePostValidator } = require('../validators/post.validator');
+const { WRONG_POST, POST_NOT_FOUND, WRONG_DATA } = require('../configs/stringConstants');
+const { createPostValidator, updatePostValidator, userIdAndPostIdValidator } = require('../validators/post.validator');
 
 const isValidPostData = (req, res, next) => {
     try {
@@ -50,8 +50,23 @@ const isPostByIdExist = async (req, res, next) => {
     }
 };
 
+const isCorrectPostIdAndUserIdParams = (req, res, next) => {
+    try {
+        const { error } = userIdAndPostIdValidator.validate(req.params);
+
+        if (error) {
+            throw new ErrorHandler(BAD_REQUEST, `${WRONG_DATA} ${error.details[0].message}`);
+        }
+
+        next();
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     isValidPostData,
     isValidPostUpdate,
-    isPostByIdExist
+    isPostByIdExist,
+    isCorrectPostIdAndUserIdParams
 };

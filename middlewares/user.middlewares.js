@@ -1,8 +1,8 @@
 const ErrorHandler = require('../errors/ErrorHandler');
 const { User } = require('../models');
 const { BAD_REQUEST, NOT_FOUND } = require('../configs/statusCodes.enum');
-const { USER_NOT_FOUND, WRONG_UPDATE_USER } = require('../configs/stringConstants');
-const { updateUserValidator } = require('../validators');
+const { USER_NOT_FOUND, WRONG_DATA, WRONG_UPDATE_USER, } = require('../configs/stringConstants');
+const { updateUserValidator, userIdParamsValidator } = require('../validators');
 
 const isUserByIdExist = async (req, res, next) => {
     try {
@@ -36,7 +36,22 @@ const isValidUserUpdateData = (req, res, next) => {
     }
 };
 
+const isCorrectUserIdParams = (req, res, next) => {
+    try {
+        const { error } = userIdParamsValidator.validate(req.params);
+
+        if (error) {
+            throw new ErrorHandler(BAD_REQUEST, `${WRONG_DATA} ${error.details[0].message}`);
+        }
+
+        next();
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     isUserByIdExist,
-    isValidUserUpdateData
+    isValidUserUpdateData,
+    isCorrectUserIdParams
 };

@@ -1,5 +1,5 @@
-const { Post, User } = require('../models');
 const { CREATED } = require('../configs/statusCodes.enum');
+const { Post, User } = require('../models');
 
 const getAllPostsController = async (req, res, next) => {
     try {

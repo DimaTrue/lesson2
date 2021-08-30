@@ -22,11 +22,12 @@ module.exports = {
     SOME_WRONG: 'Oops, something went wrong. Please, contact our technical support team.',
     USER_NOT_FOUND: 'User not found.',
     WRONG_CREDENTIALS: 'Invalid credentials',
+    WRONG_DATA: 'Wrong data.',
     WRONG_LOGIN:
     'Invalid credentials. Please check your email, password and try again. Or register.',
+    WRONG_POST: 'Invalid data. Please check your post title, content and try again.',
     WRONG_SIGNUP:
     'Invalid credentials. Please check your name, age, email, password and try again.',
-    WRONG_POST: 'Invalid data. Please check your post title, content and try again.',
     WRONG_UPDATE_USER:
     'Invalid credentials. Please check your name, age, email and try again.'
 };

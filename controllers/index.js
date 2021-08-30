@@ -1,12 +1,17 @@
 const {
-    getUserController, getUsersListController, deleteUserByIdController, updateUserByIdController
+    deleteUserByIdController,
+    getUserController,
+    getUsersListController,
+    updateUserByIdController
 } = require('./users.controller');
-const { signUpController, loginController } = require('./auth.controller');
+const { loginController, signUpController } = require('./auth.controller');
 const {
-    getAllPostsController, getPostsListByUserController, createPostController,
-    getPostByIdController,
     deleteUsersPostByIdController,
-    editPostController
+    editPostController,
+    getAllPostsController,
+    getPostsListByUserController,
+    createPostController,
+    getPostByIdController,
 } = require('./posts.controller');
 
 module.exports = {

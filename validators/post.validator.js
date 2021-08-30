@@ -1,5 +1,7 @@
 const Joi = require('joi');
 
+const { idSubScheme } = require('./user.validator');
+
 const createPostValidator = Joi.object({
     title: Joi.string().min(2).max(30).trim()
         .required(),
@@ -12,7 +14,13 @@ const updatePostValidator = Joi.object({
     content: Joi.string().min(2).trim(),
 });
 
+const userIdAndPostIdValidator = Joi.object({
+    user_id: idSubScheme,
+    post_id: idSubScheme,
+});
+
 module.exports = {
     createPostValidator,
-    updatePostValidator
+    updatePostValidator,
+    userIdAndPostIdValidator
 };
