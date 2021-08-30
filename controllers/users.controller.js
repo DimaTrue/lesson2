@@ -1,51 +1,53 @@
 const { User } = require('../models');
-const { OK } = require('../configs/statusCodes.enum');
 const { userNormalizator } = require('../utils');
 
-module.exports = {
+const getUsersListController = async (req, res, next) => {
+    try {
+        const users = await User.find({});
 
-    getUsersListController: async (req, res, next) => {
-        try {
-            const users = await User.find({});
+        const responseUsersArr = users.map((user) => userNormalizator(user));
 
-            const responseUsersArr = users.map((user) => userNormalizator(user));
-
-            res.status(OK).json({ users: responseUsersArr });
-        } catch (err) {
-            next(err);
-        }
-    },
-
-    getUserController: (req, res, next) => {
-        try {
-            const normalizedUser = userNormalizator(req.user);
-            res.status(OK).json({ user: normalizedUser });
-        } catch (err) {
-            next(err);
-        }
-    },
-
-    deleteUserByIdController: async (req, res, next) => {
-        try {
-            await User.deleteOne({ _id: req.user.id });
-
-            const normalizedUser = userNormalizator(req.user);
-            res.status(OK).json({ user: normalizedUser });
-        } catch (err) {
-            next(err);
-        }
-    },
-
-    updateUserByIdController: async (req, res, next) => {
-        try {
-            const user = await User.findOneAndUpdate({ _id: req.user.id }, req.body, { new: true });
-
-            const normalizedUser = userNormalizator(user);
-
-            res.status(OK).json({ user: normalizedUser });
-        } catch (err) {
-            next(err);
-        }
+        res.json({ users: responseUsersArr });
+    } catch (err) {
+        next(err);
     }
+};
 
+const getUserController = (req, res, next) => {
+    try {
+        const normalizedUser = userNormalizator(req.user);
+        res.json({ user: normalizedUser });
+    } catch (err) {
+        next(err);
+    }
+};
+
+const deleteUserByIdController = async (req, res, next) => {
+    try {
+        await User.deleteOne({ _id: req.user.id });
+
+        const normalizedUser = userNormalizator(req.user);
+        res.json({ user: normalizedUser });
+    } catch (err) {
+        next(err);
+    }
+};
+
+const updateUserByIdController = async (req, res, next) => {
+    try {
+        const user = await User.findOneAndUpdate({ _id: req.user.id }, req.body, { new: true });
+
+        const normalizedUser = userNormalizator(user);
+
+        res.json({ user: normalizedUser });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports = {
+    getUsersListController,
+    getUserController,
+    deleteUserByIdController,
+    updateUserByIdController
 };
