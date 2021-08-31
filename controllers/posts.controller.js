@@ -1,4 +1,4 @@
-const { CREATED } = require('../configs/statusCodes.enum');
+const { CREATED, NO_CONTENT } = require('../configs/statusCodes.enum');
 const { Post, User } = require('../models');
 
 const getAllPostsController = async (req, res, next) => {
@@ -59,7 +59,7 @@ const deleteUsersPostByIdController = async (req, res, next) => {
             { new: true }
         );
 
-        res.json({ post: post_id });
+        res.status(NO_CONTENT).json({ post: post_id });
     } catch (err) {
         next(err);
     }

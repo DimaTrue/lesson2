@@ -1,3 +1,4 @@
+const { NO_CONTENT } = require('../configs/statusCodes.enum');
 const { User } = require('../models');
 const { userNormalizator } = require('../utils');
 
@@ -27,7 +28,7 @@ const deleteUserByIdController = async (req, res, next) => {
         await User.deleteOne({ _id: req.user.id });
 
         const normalizedUser = userNormalizator(req.user);
-        res.json({ user: normalizedUser });
+        res.status(NO_CONTENT).json({ user: normalizedUser });
     } catch (err) {
         next(err);
     }
