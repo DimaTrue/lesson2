@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 const ErrorHandler = require('./errors/ErrorHandler');
 const { authRouter, userRouter, postRouter } = require('./routers');
-const { MONGO_URL, PORT } = require('./configs/portConfig');
+const { MONGO_URL, PORT } = require('./configs/configs');
 const { INTERNAL, NOT_FOUND } = require('./configs/statusCodes.enum');
 const {
     FAIL_MONGO, PAGE_NOT_FOUND, SOME_WRONG, SERVER_RUNNING
