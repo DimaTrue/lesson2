@@ -1,23 +1,24 @@
 const router = require('express').Router();
 
 const { User } = require('../models');
-const { EMAIL_ALREADY_EXIST, WRONG_LOGIN } = require('../configs/stringConstants');
+const { EMAIL, EMAIL_ALREADY_EXIST, WRONG_LOGIN } = require('../configs/stringConstants');
 const { BAD_REQUEST, CONFLICT } = require('../configs/statusCodes.enum');
+const { loginValidator, signupValidator, } = require('../validators');
 
 const { loginController, signUpController } = require('../controllers');
 const {
-    isEntityExistInDB, isValidUserData, isValidLogin, throwErrorIfEntityExist, throwErrorIfEntityNotExist
+    isEntityExistInDB, throwErrorIfEntityExist, throwErrorIfEntityNotExist, validateIncomingData
 } = require('../middlewares');
 
 router.post('/auth',
-    isValidLogin,
-    isEntityExistInDB(User, 'email', 'body'),
+    validateIncomingData(loginValidator),
+    isEntityExistInDB(User, EMAIL),
     throwErrorIfEntityNotExist(BAD_REQUEST, WRONG_LOGIN),
     loginController);
 
 router.post('/signup',
-    isValidUserData,
-    isEntityExistInDB(User, 'email', 'body'),
+    validateIncomingData(signupValidator),
+    isEntityExistInDB(User, EMAIL),
     throwErrorIfEntityExist(CONFLICT, EMAIL_ALREADY_EXIST),
     signUpController);
 

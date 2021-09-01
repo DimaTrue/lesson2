@@ -1,5 +1,8 @@
 module.exports = {
+    _ID: '_id',
     ACCOUNT_CREATED: 'Your account successfully created! Thanks for signing up.',
+    BODY: 'body',
+    EMAIL: 'email',
     EMAIL_ALREADY_EXIST:
     'This email already exists. Please check your email and try again. Or login.',
     ENTITY_EXIST: 'Entity is already exists',
@@ -15,6 +18,8 @@ module.exports = {
     'Invalid password. Must have at least 6 characters, one digit and a capital letter. Please check your password and try again.',
     INVALID_TITLE: 'Invalid title. Please check your title and try again.',
     PAGE_NOT_FOUND: 'Page not found.',
+    PARAMS: 'params',
+    POST_ID: 'post_id',
     POST_NOT_FOUND: 'Post not found.',
     REQUIRED_AGE: 'Age is required.',
     REQUIRED_EMAIL: 'Email is required.',
@@ -22,6 +27,7 @@ module.exports = {
     REQUIRED_PASSWORD: 'Password is required.',
     SERVER_RUNNING: '🚀 Server running on port:',
     SOME_WRONG: 'Oops, something went wrong. Please, contact our technical support team.',
+    USER_ID: 'user_id',
     USER_NOT_FOUND: 'User not found.',
     WRONG_CREDENTIALS: 'Invalid credentials',
     WRONG_DATA: 'Wrong data.',

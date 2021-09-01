@@ -1,7 +1,8 @@
 const ErrorHandler = require('../errors/ErrorHandler');
-const { ENTITY_EXIST, ENTITY_NOT_FOUND } = require('../configs/stringConstants');
+const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../configs/statusCodes.enum');
+const { BODY, ENTITY_EXIST, ENTITY_NOT_FOUND } = require('../configs/stringConstants');
 
-const isEntityExistInDB = (model, property, searchIn = 'body', dbField = property) => async (req, res, next) => {
+const isEntityExistInDB = (model, property, searchIn = BODY, dbField = property) => async (req, res, next) => {
     try {
         const value = req[searchIn][property];
 
@@ -14,7 +15,7 @@ const isEntityExistInDB = (model, property, searchIn = 'body', dbField = propert
     }
 };
 
-const throwErrorIfEntityExist = (code = 419, errorMessage = ENTITY_EXIST) => (req, res, next) => {
+const throwErrorIfEntityExist = (code = CONFLICT, errorMessage = ENTITY_EXIST) => (req, res, next) => {
     try {
         const { entity } = req;
 
@@ -28,7 +29,7 @@ const throwErrorIfEntityExist = (code = 419, errorMessage = ENTITY_EXIST) => (re
     }
 };
 
-const throwErrorIfEntityNotExist = (code = 404, errorMessage = ENTITY_NOT_FOUND) => (req, res, next) => {
+const throwErrorIfEntityNotExist = (code = NOT_FOUND, errorMessage = ENTITY_NOT_FOUND) => (req, res, next) => {
     try {
         const { entity } = req;
 
@@ -42,8 +43,23 @@ const throwErrorIfEntityNotExist = (code = 404, errorMessage = ENTITY_NOT_FOUND)
     }
 };
 
+const validateIncomingData = (validator, searchIn = BODY) => (req, res, next) => {
+    try {
+        const { error } = validator.validate(req[searchIn]);
+
+        if (error) {
+            throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+        }
+
+        next();
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     isEntityExistInDB,
     throwErrorIfEntityExist,
-    throwErrorIfEntityNotExist
+    throwErrorIfEntityNotExist,
+    validateIncomingData
 };
