@@ -2,6 +2,8 @@ module.exports = {
     ACCOUNT_CREATED: 'Your account successfully created! Thanks for signing up.',
     EMAIL_ALREADY_EXIST:
     'This email already exists. Please check your email and try again. Or login.',
+    ENTITY_EXIST: 'Entity is already exists',
+    ENTITY_NOT_FOUND: 'Entity not found',
     FAIL_MONGO: 'Failed connection to MongoDb: ',
     INVALID_AGE: 'Invalid age. Must be from 6 to 110. Please check your age and try again.',
     INVALID_CONTENT: 'Invalid content. Please check your content and try again.',

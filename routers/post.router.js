@@ -1,5 +1,8 @@
 const router = require('express').Router();
 
+const { Post, User } = require('../models');
+const { NOT_FOUND } = require('../configs/statusCodes.enum');
+const { POST_NOT_FOUND, USER_NOT_FOUND } = require('../configs/stringConstants');
 const {
     createPostController,
     getAllPostsController,
@@ -10,28 +13,48 @@ const {
 } = require('../controllers');
 const {
     isCorrectPostIdAndUserIdParams,
-    isCorrectUserIdParams, isPostByIdExist, isValidPostData, isValidPostUpdate, isUserByIdExist
+    isCorrectUserIdParams,
+    isEntityExistInDB,
+    isValidPostData,
+    isValidPostUpdate,
+    throwErrorIfEntityNotExist
 } = require('../middlewares');
 
 router.get('/', getAllPostsController);
 
-router.get('/:post_id', isPostByIdExist, getPostByIdController);
+router.get('/:post_id',
+    isEntityExistInDB(Post, 'post_id', 'params', '_id'),
+    throwErrorIfEntityNotExist(NOT_FOUND, POST_NOT_FOUND),
+    getPostByIdController);
 
-router.get('/by_user/:user_id', isCorrectUserIdParams, isUserByIdExist, getPostsListByUserController);
+router.get('/by_user/:user_id',
+    isCorrectUserIdParams,
+    isEntityExistInDB(User, 'user_id', 'params', '_id'),
+    throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),
+    getPostsListByUserController);
 
-router.post('/:user_id/create_post', isCorrectUserIdParams, isValidPostData, isUserByIdExist, createPostController);
+router.post('/:user_id/create_post',
+    isCorrectUserIdParams,
+    isValidPostData,
+    isEntityExistInDB(User, 'user_id', 'params', '_id'),
+    throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),
+    createPostController);
 
 router.delete('/:user_id/:post_id',
     isCorrectPostIdAndUserIdParams,
-    isUserByIdExist,
-    isPostByIdExist,
+    isEntityExistInDB(User, 'user_id', 'params', '_id'),
+    throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),
+    isEntityExistInDB(Post, 'post_id', 'params', '_id'),
+    throwErrorIfEntityNotExist(NOT_FOUND, POST_NOT_FOUND),
     deleteUsersPostByIdController);
 
 router.put('/:user_id/:post_id',
     isCorrectPostIdAndUserIdParams,
     isValidPostUpdate,
-    isUserByIdExist,
-    isPostByIdExist,
+    isEntityExistInDB(User, 'user_id', 'params', '_id'),
+    throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),
+    isEntityExistInDB(Post, 'post_id', 'params', '_id'),
+    throwErrorIfEntityNotExist(NOT_FOUND, POST_NOT_FOUND),
     editPostController);
 
 module.exports = router;

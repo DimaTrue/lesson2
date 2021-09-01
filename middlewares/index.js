@@ -1,21 +1,21 @@
+const { isValidUserData, isValidLogin } = require('./auth.middlewares');
+const { isEntityExistInDB, throwErrorIfEntityExist, throwErrorIfEntityNotExist } = require('./common.middlewares');
 const {
-    isEmailExist, isValidUserData, isValidLogin, isAccountExist
-} = require('./auth.middlewares');
-const {
-    isCorrectPostIdAndUserIdParams, isPostByIdExist, isValidPostData, isValidPostUpdate
+    isCorrectPostIdAndUserIdParams, isValidPostData, isValidPostUpdate
 } = require('./post.middleware');
-const { isCorrectUserIdParams, isUserByIdExist, isValidUserUpdateData } = require('./user.middlewares');
+const {
+    isCorrectUserIdParams, isValidUserUpdateData
+} = require('./user.middlewares');
 
 module.exports = {
-    isAccountExist,
     isCorrectPostIdAndUserIdParams,
     isCorrectUserIdParams,
-    isEmailExist,
-    isPostByIdExist,
+    isEntityExistInDB,
     isValidUserData,
     isValidLogin,
-    isUserByIdExist,
     isValidPostData,
     isValidPostUpdate,
-    isValidUserUpdateData
+    isValidUserUpdateData,
+    throwErrorIfEntityExist,
+    throwErrorIfEntityNotExist
 };

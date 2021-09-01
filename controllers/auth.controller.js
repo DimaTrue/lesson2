@@ -27,9 +27,9 @@ const signUpController = async (req, res, next) => {
 
 const loginController = async (req, res, next) => {
     try {
-        const normalizedUser = userNormalizator(req.user);
+        const normalizedUser = userNormalizator(req.entity);
         const { password } = req.body;
-        const { password: hashPassword } = req.user;
+        const { password: hashPassword } = req.entity;
 
         const isPasswordCorrect = await passwordService.comparePassword(password, hashPassword);
 

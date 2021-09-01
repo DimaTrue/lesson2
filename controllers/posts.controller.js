@@ -13,7 +13,7 @@ const getAllPostsController = async (req, res, next) => {
 
 const getPostsListByUserController = async (req, res, next) => {
     try {
-        const posts = await Post.find({ owner: req.user._id });
+        const posts = await Post.find({ owner: req.entity._id });
 
         res.json({ posts });
     } catch (err) {
@@ -23,7 +23,7 @@ const getPostsListByUserController = async (req, res, next) => {
 
 const getPostByIdController = (req, res, next) => {
     try {
-        res.json({ post: req.post });
+        res.json({ post: req.entity });
     } catch (err) {
         next(err);
     }
@@ -33,10 +33,10 @@ const createPostController = async (req, res, next) => {
     try {
         const { title, content } = req.body;
 
-        const post = await Post.create({ title, content, owner: req.user });
+        const post = await Post.create({ title, content, owner: req.entity });
 
         await User.updateOne(
-            { _id: req.user.id },
+            { _id: req.entity.id },
             { $push: { posts: post } },
             { new: true, useFindAndModify: false }
         );
@@ -49,17 +49,17 @@ const createPostController = async (req, res, next) => {
 
 const deleteUsersPostByIdController = async (req, res, next) => {
     try {
-        const { post_id } = req.params;
+        const { post_id, user_id } = req.params;
 
         const post = await Post.findByIdAndDelete(post_id);
 
         await User.findOneAndUpdate(
-            { _id: req.user.id },
+            { _id: user_id },
             { $pull: { posts: post._id } },
             { new: true }
         );
 
-        res.status(NO_CONTENT).json({ post: post_id });
+        res.sendStatus(NO_CONTENT);
     } catch (err) {
         next(err);
     }
