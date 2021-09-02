@@ -9,19 +9,25 @@ const { updateUserValidator, userIdParamsValidator } = require('../validators');
 const {
     deleteUserByIdController, getUsersListController, getUserController, updateUserByIdController
 } = require('../controllers');
-const { isEntityExistInDB, throwErrorIfEntityNotExist, validateIncomingData } = require('../middlewares');
+const {
+    checkAccessToken, isEntityExistInDB, isUserAllowedForAction, throwErrorIfEntityNotExist, validateIncomingData
+} = require('../middlewares');
 
 router.get('/', getUsersListController);
 
 router.put('/:user_id',
     validateIncomingData(userIdParamsValidator, PARAMS),
     validateIncomingData(updateUserValidator),
+    checkAccessToken,
+    isUserAllowedForAction,
     isEntityExistInDB(User, USER_ID, PARAMS, _ID),
     throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),
     updateUserByIdController);
 
 router.use('/:user_id',
     validateIncomingData(userIdParamsValidator, PARAMS),
+    checkAccessToken,
+    isUserAllowedForAction,
     isEntityExistInDB(User, USER_ID, PARAMS, _ID),
     throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),);
 

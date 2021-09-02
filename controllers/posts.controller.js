@@ -1,4 +1,5 @@
 const { CREATED, NO_CONTENT } = require('../configs/statusCodes.enum');
+const { USER } = require('../configs/dbTables.enum');
 const { Post, User } = require('../models');
 
 const getAllPostsController = async (req, res, next) => {
@@ -13,7 +14,7 @@ const getAllPostsController = async (req, res, next) => {
 
 const getPostsListByUserController = async (req, res, next) => {
     try {
-        const posts = await Post.find({ owner: req.entity._id });
+        const posts = await Post.find({ [USER]: req.entity._id });
 
         res.json({ posts });
     } catch (err) {
@@ -33,7 +34,7 @@ const createPostController = async (req, res, next) => {
     try {
         const { title, content } = req.body;
 
-        const post = await Post.create({ title, content, owner: req.entity });
+        const post = await Post.create({ title, content, [USER]: req.entity });
 
         await User.updateOne(
             { _id: req.entity.id },

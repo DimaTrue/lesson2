@@ -1,4 +1,5 @@
 module.exports = {
-    User: require('./user.model'),
-    Post: require('./post.model')
+    OAuth: require('./oauth.model'),
+    Post: require('./post.model'),
+    User: require('./user.model')
 };

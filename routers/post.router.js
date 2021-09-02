@@ -13,7 +13,9 @@ const {
     deleteUsersPostByIdController,
     editPostController
 } = require('../controllers');
-const { isEntityExistInDB, throwErrorIfEntityNotExist, validateIncomingData } = require('../middlewares');
+const {
+    isEntityExistInDB, throwErrorIfEntityNotExist, validateIncomingData, checkAccessToken, isUserAllowedForAction,
+} = require('../middlewares');
 const {
     createPostValidator, updatePostValidator, userIdAndPostIdValidator, postIdParamsValidator, userIdParamsValidator
 } = require('../validators');
@@ -35,11 +37,16 @@ router.get('/by_user/:user_id',
 router.post('/:user_id/create_post',
     validateIncomingData(userIdParamsValidator, PARAMS),
     validateIncomingData(createPostValidator),
+    checkAccessToken,
+    isUserAllowedForAction,
     isEntityExistInDB(User, USER_ID, PARAMS, _ID),
     throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),
     createPostController);
 
-router.use('/:user_id/:post_id', validateIncomingData(userIdAndPostIdValidator, PARAMS),);
+router.use('/:user_id/:post_id',
+    validateIncomingData(userIdAndPostIdValidator, PARAMS),
+    checkAccessToken,
+    isUserAllowedForAction);
 
 router.delete('/:user_id/:post_id',
     isEntityExistInDB(User, USER_ID, PARAMS, _ID),

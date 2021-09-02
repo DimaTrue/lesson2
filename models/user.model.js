@@ -5,6 +5,7 @@ const roles = require('../configs/user-roles.enum');
 const {
     INVALID_AGE, INVALID_EMAIL, INVALID_NAME, INVALID_PASSWORD, REQUIRED_AGE, REQUIRED_EMAIL, REQUIRED_NAME, REQUIRED_PASSWORD
 } = require('../configs/stringConstants');
+const { POST, USER } = require('../configs/dbTables.enum');
 
 const userSchema = new Schema({
     name: {
@@ -62,7 +63,7 @@ const userSchema = new Schema({
     },
     posts: [{
         type: Schema.Types.ObjectId,
-        ref: 'Post',
+        ref: POST,
     }],
     role: {
         type: String,
@@ -75,4 +76,4 @@ const userSchema = new Schema({
     }
 }, { timestamps: true });
 
-module.exports = model('User', userSchema);
+module.exports = model(USER, userSchema);

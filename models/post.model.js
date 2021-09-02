@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const { INVALID_CONTENT, INVALID_TITLE } = require('../configs/stringConstants');
+const { POST, USER } = require('../configs/dbTables.enum');
 
 const postSchema = new Schema({
     title: {
@@ -21,11 +22,11 @@ const postSchema = new Schema({
         required: true,
         trim: true
     },
-    owner: {
+    [USER]: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: USER,
         required: true
     }
 }, { timestamps: true });
 
-module.exports = model('Post', postSchema);
+module.exports = model(POST, postSchema);

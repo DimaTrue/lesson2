@@ -17,6 +17,7 @@ module.exports = {
     // eslint-disable-next-line max-len
     'Invalid password. Must have at least 6 characters, one digit and a capital letter. Please check your password and try again.',
     INVALID_TITLE: 'Invalid title. Please check your title and try again.',
+    INVALID_TOKEN: 'Invalid token',
     PAGE_NOT_FOUND: 'Page not found.',
     PARAMS: 'params',
     POST_ID: 'post_id',
@@ -29,6 +30,7 @@ module.exports = {
     SOME_WRONG: 'Oops, something went wrong. Please, contact our technical support team.',
     USER_ID: 'user_id',
     USER_NOT_FOUND: 'User not found.',
+    WRONG_ACCESS: 'You do not have access rights to the content',
     WRONG_CREDENTIALS: 'Invalid credentials',
     WRONG_DATA: 'Wrong data.',
     WRONG_LOGIN:

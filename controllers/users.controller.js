@@ -1,5 +1,6 @@
 const { NO_CONTENT } = require('../configs/statusCodes.enum');
-const { User } = require('../models');
+const { USER } = require('../configs/dbTables.enum');
+const { User, Post } = require('../models');
 const { userNormalizator } = require('../utils');
 
 const getUsersListController = async (req, res, next) => {
@@ -26,6 +27,7 @@ const getUserController = (req, res, next) => {
 const deleteUserByIdController = async (req, res, next) => {
     try {
         await User.deleteOne({ _id: req.entity.id });
+        await Post.deleteMany({ [USER]: req.entity });
 
         res.sendStatus(NO_CONTENT);
     } catch (err) {
