@@ -1,6 +1,6 @@
 const { NO_CONTENT } = require('../configs/statusCodes.enum');
 const { USER } = require('../configs/dbTables.enum');
-const { User, Post } = require('../models');
+const { User, Post, OAuth } = require('../models');
 const { userNormalizator } = require('../utils');
 
 const getUsersListController = async (req, res, next) => {
@@ -17,7 +17,7 @@ const getUsersListController = async (req, res, next) => {
 
 const getUserController = (req, res, next) => {
     try {
-        const normalizedUser = userNormalizator(req.entity);
+        const normalizedUser = userNormalizator(req.user);
         res.json({ user: normalizedUser });
     } catch (err) {
         next(err);
@@ -26,8 +26,11 @@ const getUserController = (req, res, next) => {
 
 const deleteUserByIdController = async (req, res, next) => {
     try {
-        await User.deleteOne({ _id: req.entity.id });
-        await Post.deleteMany({ [USER]: req.entity });
+        await User.deleteOne({ _id: req.user.id });
+
+        await Post.deleteMany({ [USER]: req.user });
+
+        await OAuth.deleteMany({ [USER]: req.user });
 
         res.sendStatus(NO_CONTENT);
     } catch (err) {
@@ -37,7 +40,7 @@ const deleteUserByIdController = async (req, res, next) => {
 
 const updateUserByIdController = async (req, res, next) => {
     try {
-        const user = await User.findOneAndUpdate({ _id: req.entity.id }, req.body, { new: true });
+        const user = await User.findOneAndUpdate({ _id: req.user.id }, req.body, { new: true });
 
         const normalizedUser = userNormalizator(user);
 

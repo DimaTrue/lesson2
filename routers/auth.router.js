@@ -19,7 +19,7 @@ const {
 router.post('/login',
     validateIncomingData(loginValidator),
     isEntityExistInDB(User, EMAIL),
-    throwErrorIfEntityNotExist(BAD_REQUEST, WRONG_LOGIN),
+    throwErrorIfEntityNotExist(User, BAD_REQUEST, WRONG_LOGIN),
     loginController);
 
 router.post('/logout', checkAccessToken, logoutController);
@@ -31,7 +31,7 @@ router.post('/token', checkRefreshToken, refreshTokenController);
 router.post('/signup',
     validateIncomingData(signupValidator),
     isEntityExistInDB(User, EMAIL),
-    throwErrorIfEntityExist(CONFLICT, EMAIL_ALREADY_EXIST),
+    throwErrorIfEntityExist(User, CONFLICT, EMAIL_ALREADY_EXIST),
     signUpController);
 
 module.exports = router;

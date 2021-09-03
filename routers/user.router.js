@@ -21,7 +21,7 @@ router.put('/:user_id',
     checkAccessToken,
     isUserAllowedForAction,
     isEntityExistInDB(User, USER_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),
+    throwErrorIfEntityNotExist(User, NOT_FOUND, USER_NOT_FOUND),
     updateUserByIdController);
 
 router.use('/:user_id',
@@ -29,7 +29,7 @@ router.use('/:user_id',
     checkAccessToken,
     isUserAllowedForAction,
     isEntityExistInDB(User, USER_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(NOT_FOUND, USER_NOT_FOUND),);
+    throwErrorIfEntityNotExist(User, NOT_FOUND, USER_NOT_FOUND),);
 
 router.get('/:user_id', getUserController);
 

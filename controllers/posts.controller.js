@@ -14,7 +14,7 @@ const getAllPostsController = async (req, res, next) => {
 
 const getPostsListByUserController = async (req, res, next) => {
     try {
-        const posts = await Post.find({ [USER]: req.entity._id });
+        const posts = await Post.find({ [USER]: req.user._id });
 
         res.json({ posts });
     } catch (err) {
@@ -24,7 +24,7 @@ const getPostsListByUserController = async (req, res, next) => {
 
 const getPostByIdController = (req, res, next) => {
     try {
-        res.json({ post: req.entity });
+        res.json({ post: req.post });
     } catch (err) {
         next(err);
     }
@@ -34,10 +34,10 @@ const createPostController = async (req, res, next) => {
     try {
         const { title, content } = req.body;
 
-        const post = await Post.create({ title, content, [USER]: req.entity });
+        const post = await Post.create({ title, content, [USER]: req.user });
 
         await User.updateOne(
-            { _id: req.entity.id },
+            { _id: req.user.id },
             { $push: { posts: post } },
             { new: true, useFindAndModify: false }
         );

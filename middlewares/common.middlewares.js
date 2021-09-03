@@ -5,19 +5,21 @@ const { BODY, ENTITY_EXIST, ENTITY_NOT_FOUND } = require('../configs/stringConst
 const isEntityExistInDB = (model, property, searchIn = BODY, dbField = property) => async (req, res, next) => {
     try {
         const value = req[searchIn][property];
+        const key = model.collection.modelName;
 
         const entity = await model.findOne({ [dbField]: value });
 
-        req.entity = entity;
+        req[key] = entity;
         next();
     } catch (err) {
         next(err);
     }
 };
 
-const throwErrorIfEntityExist = (code = CONFLICT, errorMessage = ENTITY_EXIST) => (req, res, next) => {
+const throwErrorIfEntityExist = (model, code = CONFLICT, errorMessage = ENTITY_EXIST) => (req, res, next) => {
     try {
-        const { entity } = req;
+        const key = model.collection.modelName;
+        const entity = req[key];
 
         if (entity) {
             throw new ErrorHandler(code, errorMessage);
@@ -29,9 +31,10 @@ const throwErrorIfEntityExist = (code = CONFLICT, errorMessage = ENTITY_EXIST) =
     }
 };
 
-const throwErrorIfEntityNotExist = (code = NOT_FOUND, errorMessage = ENTITY_NOT_FOUND) => (req, res, next) => {
+const throwErrorIfEntityNotExist = (model, code = NOT_FOUND, errorMessage = ENTITY_NOT_FOUND) => (req, res, next) => {
     try {
-        const { entity } = req;
+        const key = model.collection.modelName;
+        const entity = req[key];
 
         if (!entity) {
             throw new ErrorHandler(code, errorMessage);
