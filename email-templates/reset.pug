@@ -1,0 +1,12 @@
+extends container
+block content
+    div() 
+        h1(class="uk-padding ")
+            | Hello, #{userName}
+        div()
+            p()
+                | This email was send to reset password. 
+            p()  
+                | To reset your password please follow the link below:
+            a(href=frontendUrl)
+                | reset password. #{frontendUrl}

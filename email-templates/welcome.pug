@@ -1,0 +1,12 @@
+extends container
+block content
+    div() 
+        h1(class="uk-padding ")
+            | Hello, #{userName}
+        div()
+            p()
+                | You successfully signed up! 
+            p()  
+                | To confirm your account please follow the link below:
+            a(href=frontendUrl)
+                | confirm accont. #{frontendUrl}

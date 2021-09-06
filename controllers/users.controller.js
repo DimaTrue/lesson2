@@ -18,6 +18,7 @@ const getUsersListController = async (req, res, next) => {
 const getUserController = (req, res, next) => {
     try {
         const normalizedUser = userNormalizator(req.user);
+
         res.json({ user: normalizedUser });
     } catch (err) {
         next(err);

@@ -73,6 +73,10 @@ const userSchema = new Schema({
             message: '{VALUE} is not supported'
         },
         trim: true
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 

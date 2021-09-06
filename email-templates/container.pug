@@ -1,0 +1,13 @@
+doctype html 
+html 
+    head
+        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/uikit@3.7.2/dist/css/uikit.min.css")
+    body
+        div(class='uk-text-center uk-column-1@xl' uk-grid)
+            div(class='uk-card uk-card-primary uk-card-body') 
+                h1(class='uk-heading-xlarge') 
+                    | Node.js app 
+            div(class='uk-height-large' uk-height-viewport="expand: true" style="min-height: 569px") 
+                block content 
+            div(class='uk-position-bottom uk-card uk-card-primary uk-card-body') 
+                | Copyright © #{currentYear} Inoxoft Distribution International. All rights reserved.

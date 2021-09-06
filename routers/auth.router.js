@@ -5,7 +5,12 @@ const { EMAIL, EMAIL_ALREADY_EXIST, WRONG_LOGIN } = require('../configs/stringCo
 const { BAD_REQUEST, CONFLICT } = require('../configs/statusCodes.enum');
 const { loginValidator, signupValidator, } = require('../validators');
 const {
-    loginController, logoutController, logoutFromAllDevicesController, refreshTokenController, signUpController
+    confirmController,
+    loginController,
+    logoutController,
+    logoutFromAllDevicesController,
+    refreshTokenController,
+    signUpController
 } = require('../controllers');
 const {
     checkAccessToken,
@@ -33,5 +38,7 @@ router.post('/signup',
     isEntityExistInDB(User, EMAIL),
     throwErrorIfEntityExist(User, CONFLICT, EMAIL_ALREADY_EXIST),
     signUpController);
+
+router.get('/confirm', confirmController);
 
 module.exports = router;

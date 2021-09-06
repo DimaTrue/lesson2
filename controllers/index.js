@@ -5,7 +5,12 @@ const {
     updateUserByIdController
 } = require('./users.controller');
 const {
-    loginController, logoutController, logoutFromAllDevicesController, refreshTokenController, signUpController
+    confirmController,
+    loginController,
+    logoutController,
+    logoutFromAllDevicesController,
+    refreshTokenController,
+    signUpController
 } = require('./auth.controller');
 const {
     deleteUsersPostByIdController,
@@ -17,6 +22,7 @@ const {
 } = require('./posts.controller');
 
 module.exports = {
+    confirmController,
     createPostController,
     deleteUserByIdController,
     deleteUsersPostByIdController,

@@ -6,7 +6,7 @@ const { AUTHORIZATION } = require('../configs/constants');
 const { jwtService } = require('../services');
 const { OAuth } = require('../models');
 const { USER } = require('../configs/dbTables.enum');
-const { REFRESH } = require('../configs/configs');
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = require('../configs/configs');
 
 const checkAccessToken = async (req, res, next) => {
     try {
@@ -16,7 +16,7 @@ const checkAccessToken = async (req, res, next) => {
             throw new ErrorHandler(UNAUTHORIZED, INVALID_TOKEN);
         }
 
-        await jwtService.verifyToken(token);
+        await jwtService.verifyToken(token, ACCESS_TOKEN_SECRET);
 
         const tokenFromDB = await OAuth.findOne({ access_token: token }).populate(USER);
 
@@ -40,7 +40,7 @@ const checkRefreshToken = async (req, res, next) => {
             throw new ErrorHandler(UNAUTHORIZED, INVALID_TOKEN);
         }
 
-        await jwtService.verifyToken(token, REFRESH);
+        await jwtService.verifyToken(token, REFRESH_TOKEN_SECRET);
 
         const tokenFromDB = await OAuth.findOne({ refresh_token: token }).populate(USER);
 

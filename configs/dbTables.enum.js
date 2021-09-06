@@ -1,5 +1,6 @@
 module.exports = {
     USER: 'user',
     POST: 'post',
-    OAUTH: 'oauth'
+    OAUTH: 'oauth',
+    CONFIRM_TOKEN: 'confirm_token'
 };

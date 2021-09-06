@@ -18,6 +18,8 @@ module.exports = {
     'Invalid password. Must have at least 6 characters, one digit and a capital letter. Please check your password and try again.',
     INVALID_TITLE: 'Invalid title. Please check your title and try again.',
     INVALID_TOKEN: 'Invalid token',
+    NO_REPLY: 'No reply',
+    NOT_CONFIRMED: 'Your account is not confirmed. Please, check your email and confirm account',
     PAGE_NOT_FOUND: 'Page not found.',
     PARAMS: 'params',
     POST_ID: 'post_id',
@@ -38,6 +40,7 @@ module.exports = {
     WRONG_POST: 'Invalid data. Please check your post title, content and try again.',
     WRONG_SIGNUP:
     'Invalid credentials. Please check your name, age, email, password and try again.',
+    WRONG_TEMPLATE: 'Wrong template variables',
     WRONG_UPDATE_USER:
     'Invalid credentials. Please check your name, age, email and try again.'
 };
