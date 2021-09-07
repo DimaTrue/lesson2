@@ -10,4 +10,6 @@ module.exports = {
     PORT: process.env.PORT || 5000,
     REFRESH_TOKEN_LIFE: '31d',
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '612f8e91ef4212bcf103c29bref',
+    RESET_TOKEN_LIFE: '2h',
+    RESET_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '2bcf103c29bref612f8e91ef421',
 };

@@ -10,6 +10,8 @@ const {
     CONFIRM_TOKEN_LIFE,
     REFRESH_TOKEN_LIFE,
     REFRESH_TOKEN_SECRET,
+    RESET_TOKEN_LIFE,
+    RESET_TOKEN_SECRET,
 } = require('../configs/configs');
 
 const generateTokenPair = () => {
@@ -28,6 +30,12 @@ const generateConfirmToken = () => {
     return confirmToken;
 };
 
+const generateResetToken = () => {
+    const confirmToken = jwt.sign({}, RESET_TOKEN_SECRET, { expiresIn: RESET_TOKEN_LIFE });
+
+    return confirmToken;
+};
+
 const verifyToken = (token, secret) => {
     try {
         jwt.verify(token, secret);
@@ -38,6 +46,7 @@ const verifyToken = (token, secret) => {
 
 module.exports = {
     generateConfirmToken,
+    generateResetToken,
     generateTokenPair,
     verifyToken
 };

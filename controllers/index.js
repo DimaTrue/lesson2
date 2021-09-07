@@ -6,10 +6,12 @@ const {
 } = require('./users.controller');
 const {
     confirmController,
+    forgotPasswordController,
     loginController,
     logoutController,
     logoutFromAllDevicesController,
     refreshTokenController,
+    resetPasswordController,
     signUpController
 } = require('./auth.controller');
 const {
@@ -27,12 +29,14 @@ module.exports = {
     deleteUserByIdController,
     deleteUsersPostByIdController,
     editPostController,
+    forgotPasswordController,
     getAllPostsController,
     getPostByIdController,
     getPostsListByUserController,
     getUserController,
     getUsersListController,
     refreshTokenController,
+    resetPasswordController,
     signUpController,
     loginController,
     logoutController,
