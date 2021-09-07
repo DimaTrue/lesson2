@@ -1,7 +1,6 @@
-const { NO_CONTENT } = require('../configs/statusCodes.enum');
-const { USER } = require('../configs/dbTables.enum');
 const { User, Post, OAuth } = require('../models');
 const { userNormalizator } = require('../utils');
+const { dbTables: { USER }, statusCodes } = require('../configs');
 
 const getUsersListController = async (req, res, next) => {
     try {
@@ -33,7 +32,7 @@ const deleteUserByIdController = async (req, res, next) => {
 
         await OAuth.deleteMany({ [USER]: req.user });
 
-        res.sendStatus(NO_CONTENT);
+        res.sendStatus(statusCodes.NO_CONTENT);
     } catch (err) {
         next(err);
     }

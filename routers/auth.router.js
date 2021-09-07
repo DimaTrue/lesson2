@@ -1,10 +1,7 @@
 const router = require('express').Router();
 
 const { User } = require('../models');
-const {
-    EMAIL, EMAIL_ALREADY_EXIST, QUERY, WRONG_LOGIN, WRONG_DATA
-} = require('../configs/stringConstants');
-const { BAD_REQUEST, CONFLICT } = require('../configs/statusCodes.enum');
+const { statusCodes, strings } = require('../configs');
 const {
     confirmValidator, forgotValidator, loginValidator, resetValidatorBody, resetValidatorQuery, signupValidator,
 } = require('../validators');
@@ -31,8 +28,8 @@ const {
 
 router.post('/login',
     validateIncomingData(loginValidator),
-    isEntityExistInDB(User, EMAIL),
-    throwErrorIfEntityNotExist(User, BAD_REQUEST, WRONG_LOGIN),
+    isEntityExistInDB(User, strings.EMAIL),
+    throwErrorIfEntityNotExist(User, statusCodes.BAD_REQUEST, strings.WRONG_LOGIN),
     loginController);
 
 router.post('/logout', checkAccessToken, logoutController);
@@ -43,23 +40,23 @@ router.post('/token', checkRefreshToken, refreshTokenController);
 
 router.post('/signup',
     validateIncomingData(signupValidator),
-    isEntityExistInDB(User, EMAIL),
-    throwErrorIfEntityExist(User, CONFLICT, EMAIL_ALREADY_EXIST),
+    isEntityExistInDB(User, strings.EMAIL),
+    throwErrorIfEntityExist(User, statusCodes.CONFLICT, strings.EMAIL_ALREADY_EXIST),
     signUpController);
 
 router.get('/confirm',
-    validateIncomingData(confirmValidator, QUERY),
+    validateIncomingData(confirmValidator, strings.QUERY),
     checkConfirmToken,
     confirmController);
 
 router.post('/forgot_password',
     validateIncomingData(forgotValidator),
-    isEntityExistInDB(User, EMAIL),
-    throwErrorIfEntityNotExist(User, BAD_REQUEST, WRONG_DATA),
+    isEntityExistInDB(User, strings.EMAIL),
+    throwErrorIfEntityNotExist(User, statusCodes.BAD_REQUEST, strings.WRONG_DATA),
     forgotPasswordController);
 
 router.post('/reset_password',
-    validateIncomingData(resetValidatorQuery, QUERY),
+    validateIncomingData(resetValidatorQuery, strings.QUERY),
     validateIncomingData(resetValidatorBody),
     checkResetToken,
     resetPasswordController);

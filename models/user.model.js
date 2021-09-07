@@ -1,22 +1,19 @@
 const { Schema, model } = require('mongoose');
 
-const { TEXT_REGEXP, EMAIL_REGEXP } = require('../configs/constants');
-const roles = require('../configs/user-roles.enum');
 const {
-    INVALID_AGE, INVALID_EMAIL, INVALID_NAME, INVALID_PASSWORD, REQUIRED_AGE, REQUIRED_EMAIL, REQUIRED_NAME, REQUIRED_PASSWORD
-} = require('../configs/stringConstants');
-const { POST, USER } = require('../configs/dbTables.enum');
+    constants, dbTables: { POST, USER }, roles, strings
+} = require('../configs');
 
 const userSchema = new Schema({
     name: {
         type: String,
         validate: {
-            validator: (name) => TEXT_REGEXP.test(name),
-            message: () => INVALID_NAME
+            validator: (name) => constants.TEXT_REGEXP.test(name),
+            message: () => strings.INVALID_NAME
         },
         required: [
             true,
-            REQUIRED_NAME
+            strings.REQUIRED_NAME
         ],
         trim: true
     },
@@ -24,27 +21,27 @@ const userSchema = new Schema({
         type: Number,
         min: [
             6,
-            INVALID_AGE
+            strings.INVALID_AGE
         ],
         max: [
             110,
-            INVALID_AGE
+            strings.INVALID_AGE
         ],
         required: [
             true,
-            REQUIRED_AGE
+            strings.REQUIRED_AGE
         ],
         trim: true
     },
     email: {
         type: String,
         validate: {
-            validator: (email) => EMAIL_REGEXP.test(email),
-            message: () => INVALID_EMAIL
+            validator: (email) => constants.EMAIL_REGEXP.test(email),
+            message: () => strings.INVALID_EMAIL
         },
         required: [
             true,
-            REQUIRED_EMAIL
+            strings.REQUIRED_EMAIL
         ],
         unique: true,
         trim: true
@@ -53,11 +50,11 @@ const userSchema = new Schema({
         type: String,
         validate: {
             validator: (pass) => pass.length > 1,
-            message: () => INVALID_PASSWORD
+            message: () => strings.INVALID_PASSWORD
         },
         required: [
             true,
-            REQUIRED_PASSWORD
+            strings.REQUIRED_PASSWORD
         ],
         trim: true
     },

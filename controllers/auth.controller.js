@@ -1,22 +1,12 @@
-const { CREATED, NO_CONTENT, FORBIDDEN } = require('../configs/statusCodes.enum');
 const ErrorHandler = require('../errors/ErrorHandler');
 const { emailService, passwordService, jwtService } = require('../services');
 const {
     ConfirmToken, User, OAuth, ResetToken
 } = require('../models');
 const { userNormalizator, getCurrentYear } = require('../utils');
-const { BAD_REQUEST } = require('../configs/statusCodes.enum');
 const {
-    PASSWORD_CHANGED,
-    NOT_CONFIRMED,
-    SEND_RESET_TOKEN,
-    WRONG_CREDENTIALS,
-    ACCOUNT_CONFIRMED
-} = require('../configs/stringConstants');
-const { AUTHORIZATION } = require('../configs/constants');
-const { USER } = require('../configs/dbTables.enum');
-const emailActionsEnum = require('../configs/emailActions.enum');
-const configs = require('../configs/configs');
+    configs, emailActions, dbTables: { USER }, constants, strings, statusCodes
+} = require('../configs');
 
 const signUpController = async (req, res, next) => {
     const {
@@ -41,14 +31,14 @@ const signUpController = async (req, res, next) => {
 
         await emailService.sendMail(
             email,
-            emailActionsEnum.WELCOME,
+            emailActions.WELCOME,
             {
                 userName: name,
                 currentYear: getCurrentYear(),
                 frontendUrl: `${configs.FRONTEND_URL}confirm?confirm_token=${confirm_token}`
             }
         );
-        res.status(CREATED).json({ user: normalizedUser });
+        res.status(statusCodes.CREATED).json({ user: normalizedUser });
     } catch (err) {
         next(err);
     }
@@ -61,13 +51,13 @@ const loginController = async (req, res, next) => {
         const { _id, confirmed, password: hashPassword } = req.user;
 
         if (!confirmed) {
-            throw new ErrorHandler(FORBIDDEN, NOT_CONFIRMED);
+            throw new ErrorHandler(statusCodes.FORBIDDEN, strings.NOT_CONFIRMED);
         }
 
         const isPasswordCorrect = await passwordService.comparePassword(password, hashPassword);
 
         if (!isPasswordCorrect) {
-            throw new ErrorHandler(BAD_REQUEST, WRONG_CREDENTIALS);
+            throw new ErrorHandler(statusCodes.BAD_REQUEST, strings.WRONG_CREDENTIALS);
         }
 
         const tokenPair = jwtService.generateTokenPair();
@@ -82,11 +72,11 @@ const loginController = async (req, res, next) => {
 
 const logoutController = async (req, res, next) => {
     try {
-        const token = req.get(AUTHORIZATION);
+        const token = req.get(constants.AUTHORIZATION);
 
         await OAuth.deleteOne({ access_token: token });
 
-        res.sendStatus(NO_CONTENT);
+        res.sendStatus(statusCodes.NO_CONTENT);
     } catch (err) {
         next(err);
     }
@@ -98,7 +88,7 @@ const logoutFromAllDevicesController = async (req, res, next) => {
 
         await OAuth.deleteMany({ [USER]: currentUser });
 
-        res.sendStatus(NO_CONTENT);
+        res.sendStatus(statusCodes.NO_CONTENT);
     } catch (err) {
         next(err);
     }
@@ -106,7 +96,7 @@ const logoutFromAllDevicesController = async (req, res, next) => {
 
 const refreshTokenController = async (req, res, next) => {
     try {
-        const token = req.get(AUTHORIZATION);
+        const token = req.get(constants.AUTHORIZATION);
         const { currentUser } = req;
         const normalizedUser = userNormalizator(currentUser);
 
@@ -137,7 +127,7 @@ const confirmController = async (req, res, next) => {
 
         await ConfirmToken.deleteMany({ [USER]: user._id });
 
-        res.json({ message: ACCOUNT_CONFIRMED });
+        res.json({ message: strings.ACCOUNT_CONFIRMED });
     } catch (err) {
         next(err);
     }
@@ -156,7 +146,7 @@ const forgotPasswordController = async (req, res, next) => {
 
         await emailService.sendMail(
             email,
-            emailActionsEnum.RESET_PASS,
+            emailActions.RESET_PASS,
             {
                 userName: name,
                 currentYear: getCurrentYear(),
@@ -164,7 +154,7 @@ const forgotPasswordController = async (req, res, next) => {
             }
         );
 
-        res.json({ message: SEND_RESET_TOKEN });
+        res.json({ message: strings.SEND_RESET_TOKEN });
     } catch (err) {
         next(err);
     }
@@ -185,7 +175,7 @@ const resetPasswordController = async (req, res, next) => {
 
         await OAuth.deleteMany({ [USER]: user._id });
 
-        res.json({ message: PASSWORD_CHANGED });
+        res.json({ message: strings.PASSWORD_CHANGED });
     } catch (err) {
         next(err);
     }

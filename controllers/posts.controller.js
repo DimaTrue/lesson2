@@ -1,6 +1,5 @@
-const { CREATED, NO_CONTENT } = require('../configs/statusCodes.enum');
-const { USER } = require('../configs/dbTables.enum');
 const { Post, User } = require('../models');
+const { dbTables: { USER }, statusCodes } = require('../configs');
 
 const getAllPostsController = async (req, res, next) => {
     try {
@@ -42,7 +41,7 @@ const createPostController = async (req, res, next) => {
             { new: true, useFindAndModify: false }
         );
 
-        res.status(CREATED).json({ post });
+        res.status(statusCodes.CREATED).json({ post });
     } catch (err) {
         next(err);
     }
@@ -60,7 +59,7 @@ const deleteUsersPostByIdController = async (req, res, next) => {
             { new: true }
         );
 
-        res.sendStatus(NO_CONTENT);
+        res.sendStatus(statusCodes.NO_CONTENT);
     } catch (err) {
         next(err);
     }

@@ -5,11 +5,7 @@ require('dotenv').config();
 
 const ErrorHandler = require('./errors/ErrorHandler');
 const { authRouter, userRouter, postRouter } = require('./routers');
-const { MONGO_URL, PORT } = require('./configs/configs');
-const { INTERNAL, NOT_FOUND } = require('./configs/statusCodes.enum');
-const {
-    FAIL_MONGO, PAGE_NOT_FOUND, SOME_WRONG, SERVER_RUNNING
-} = require('./configs/stringConstants');
+const { configs, statusCodes, strings } = require('./configs');
 
 const app = express();
 
@@ -18,22 +14,22 @@ app.use(express.urlencoded({ extended: true }));
 
 const runApp = async () => {
     try {
-        const result = await mongoose.connect(MONGO_URL,
+        const result = await mongoose.connect(configs.MONGO_URL,
             { useUnifiedTopology: true, useNewUrlParser: true });
 
         if (result) {
             // eslint-disable-next-line no-console
-            app.listen(PORT, () => console.log(`${SERVER_RUNNING} ${PORT}`));
+            app.listen(configs.PORT, () => console.log(`${strings.SERVER_RUNNING} ${configs.PORT}`));
         }
     } catch (err) {
         // eslint-disable-next-line no-console
-        console.log(FAIL_MONGO, err);
+        console.log(strings.FAIL_MONGO, err);
     }
 };
 
 // eslint-disable-next-line no-unused-vars
 function _errorHandler(err, req, res, next) {
-    res.status(err.status || INTERNAL).json({ message: err.message || SOME_WRONG });
+    res.status(err.status || statusCodes.INTERNAL).json({ message: err.message || strings.SOME_WRONG });
 }
 
 app.use('/', authRouter);
@@ -42,7 +38,7 @@ app.use('/users', userRouter);
 
 app.use('/posts', postRouter);
 
-app.use(() => { throw new ErrorHandler(NOT_FOUND, PAGE_NOT_FOUND); });
+app.use(() => { throw new ErrorHandler(statusCodes.NOT_FOUND, strings.PAGE_NOT_FOUND); });
 
 app.use(_errorHandler);
 

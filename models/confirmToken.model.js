@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const { CONFIRM_TOKEN, USER } = require('../configs/dbTables.enum');
+const { dbTables: { CONFIRM_TOKEN, USER } } = require('../configs');
 
 const confirmTokenSchema = new Schema({
     confirm_token: {

@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const { RESET_TOKEN, USER } = require('../configs/dbTables.enum');
+const { dbTables: { RESET_TOKEN, USER } } = require('../configs');
 
 const resetTokenSchema = new Schema({
     reset_token: {

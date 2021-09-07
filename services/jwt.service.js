@@ -1,22 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 const ErrorHandler = require('../errors/ErrorHandler');
-const { UNAUTHORIZED } = require('../configs/statusCodes.enum');
-const { INVALID_TOKEN } = require('../configs/stringConstants');
-const {
-    ACCESS_TOKEN_LIFE,
-    ACCESS_TOKEN_SECRET,
-    CONFIRM_TOKEN_SECRET,
-    CONFIRM_TOKEN_LIFE,
-    REFRESH_TOKEN_LIFE,
-    REFRESH_TOKEN_SECRET,
-    RESET_TOKEN_LIFE,
-    RESET_TOKEN_SECRET,
-} = require('../configs/configs');
+const { configs, statusCodes, strings } = require('../configs');
 
 const generateTokenPair = () => {
-    const access_token = jwt.sign({}, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_LIFE });
-    const refresh_token = jwt.sign({}, REFRESH_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_LIFE });
+    const access_token = jwt.sign({}, configs.ACCESS_TOKEN_SECRET, { expiresIn: configs.ACCESS_TOKEN_LIFE });
+    const refresh_token = jwt.sign({}, configs.REFRESH_TOKEN_SECRET, { expiresIn: configs.REFRESH_TOKEN_LIFE });
 
     return {
         access_token,
@@ -25,13 +14,13 @@ const generateTokenPair = () => {
 };
 
 const generateConfirmToken = () => {
-    const confirmToken = jwt.sign({}, CONFIRM_TOKEN_SECRET, { expiresIn: CONFIRM_TOKEN_LIFE });
+    const confirmToken = jwt.sign({}, configs.CONFIRM_TOKEN_SECRET, { expiresIn: configs.CONFIRM_TOKEN_LIFE });
 
     return confirmToken;
 };
 
 const generateResetToken = () => {
-    const confirmToken = jwt.sign({}, RESET_TOKEN_SECRET, { expiresIn: RESET_TOKEN_LIFE });
+    const confirmToken = jwt.sign({}, configs.RESET_TOKEN_SECRET, { expiresIn: configs.RESET_TOKEN_LIFE });
 
     return confirmToken;
 };
@@ -40,7 +29,7 @@ const verifyToken = (token, secret) => {
     try {
         jwt.verify(token, secret);
     } catch (err) {
-        throw new ErrorHandler(UNAUTHORIZED, INVALID_TOKEN);
+        throw new ErrorHandler(statusCodes.UNAUTHORIZED, strings.INVALID_TOKEN);
     }
 };
 

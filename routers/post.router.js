@@ -1,10 +1,7 @@
 const router = require('express').Router();
 
 const { Post, User } = require('../models');
-const { NOT_FOUND } = require('../configs/statusCodes.enum');
-const {
-    _ID, PARAMS, POST_ID, POST_NOT_FOUND, USER_ID, USER_NOT_FOUND
-} = require('../configs/stringConstants');
+const { statusCodes, strings } = require('../configs');
 const {
     createPostController,
     getAllPostsController,
@@ -23,44 +20,44 @@ const {
 router.get('/', getAllPostsController);
 
 router.get('/:post_id',
-    validateIncomingData(postIdParamsValidator, PARAMS),
-    isEntityExistInDB(Post, POST_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(Post, NOT_FOUND, POST_NOT_FOUND),
+    validateIncomingData(postIdParamsValidator, strings.PARAMS),
+    isEntityExistInDB(Post, strings.POST_ID, strings.PARAMS, strings._ID),
+    throwErrorIfEntityNotExist(Post, statusCodes.NOT_FOUND, strings.POST_NOT_FOUND),
     getPostByIdController);
 
 router.get('/by_user/:user_id',
-    validateIncomingData(userIdParamsValidator, PARAMS),
-    isEntityExistInDB(User, USER_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(User, NOT_FOUND, USER_NOT_FOUND),
+    validateIncomingData(userIdParamsValidator, strings.PARAMS),
+    isEntityExistInDB(User, strings.USER_ID, strings.PARAMS, strings._ID),
+    throwErrorIfEntityNotExist(User, statusCodes.NOT_FOUND, strings.USER_NOT_FOUND),
     getPostsListByUserController);
 
 router.post('/:user_id/create_post',
-    validateIncomingData(userIdParamsValidator, PARAMS),
+    validateIncomingData(userIdParamsValidator, strings.PARAMS),
     validateIncomingData(createPostValidator),
     checkAccessToken,
     isUserAllowedForAction,
-    isEntityExistInDB(User, USER_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(User, NOT_FOUND, USER_NOT_FOUND),
+    isEntityExistInDB(User, strings.USER_ID, strings.PARAMS, strings._ID),
+    throwErrorIfEntityNotExist(User, statusCodes.NOT_FOUND, strings.USER_NOT_FOUND),
     createPostController);
 
 router.use('/:user_id/:post_id',
-    validateIncomingData(userIdAndPostIdValidator, PARAMS),
+    validateIncomingData(userIdAndPostIdValidator, strings.PARAMS),
     checkAccessToken,
     isUserAllowedForAction);
 
 router.delete('/:user_id/:post_id',
-    isEntityExistInDB(User, USER_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(User, NOT_FOUND, USER_NOT_FOUND),
-    isEntityExistInDB(Post, POST_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(Post, NOT_FOUND, POST_NOT_FOUND),
+    isEntityExistInDB(User, strings.USER_ID, strings.PARAMS, strings._ID),
+    throwErrorIfEntityNotExist(User, statusCodes.NOT_FOUND, strings.USER_NOT_FOUND),
+    isEntityExistInDB(Post, strings.POST_ID, strings.PARAMS, strings._ID),
+    throwErrorIfEntityNotExist(Post, statusCodes.NOT_FOUND, strings.POST_NOT_FOUND),
     deleteUsersPostByIdController);
 
 router.put('/:user_id/:post_id',
     validateIncomingData(updatePostValidator),
-    isEntityExistInDB(User, USER_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(User, NOT_FOUND, USER_NOT_FOUND),
-    isEntityExistInDB(Post, POST_ID, PARAMS, _ID),
-    throwErrorIfEntityNotExist(Post, NOT_FOUND, POST_NOT_FOUND),
+    isEntityExistInDB(User, strings.USER_ID, strings.PARAMS, strings._ID),
+    throwErrorIfEntityNotExist(User, statusCodes.NOT_FOUND, strings.USER_NOT_FOUND),
+    isEntityExistInDB(Post, strings.POST_ID, strings.PARAMS, strings._ID),
+    throwErrorIfEntityNotExist(Post, statusCodes.NOT_FOUND, strings.POST_NOT_FOUND),
     editPostController);
 
 module.exports = router;

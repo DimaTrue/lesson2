@@ -1,8 +1,7 @@
 const ErrorHandler = require('../errors/ErrorHandler');
-const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../configs/statusCodes.enum');
-const { BODY, ENTITY_EXIST, ENTITY_NOT_FOUND } = require('../configs/stringConstants');
+const { strings, statusCodes } = require('../configs');
 
-const isEntityExistInDB = (model, property, searchIn = BODY, dbField = property) => async (req, res, next) => {
+const isEntityExistInDB = (model, property, searchIn = strings.BODY, dbField = property) => async (req, res, next) => {
     try {
         const value = req[searchIn][property];
         const key = model.collection.modelName;
@@ -16,7 +15,7 @@ const isEntityExistInDB = (model, property, searchIn = BODY, dbField = property)
     }
 };
 
-const throwErrorIfEntityExist = (model, code = CONFLICT, errorMessage = ENTITY_EXIST) => (req, res, next) => {
+const throwErrorIfEntityExist = (model, code = statusCodes.CONFLICT, errorMessage = strings.ENTITY_EXIST) => (req, res, next) => {
     try {
         const key = model.collection.modelName;
         const entity = req[key];
@@ -31,7 +30,11 @@ const throwErrorIfEntityExist = (model, code = CONFLICT, errorMessage = ENTITY_E
     }
 };
 
-const throwErrorIfEntityNotExist = (model, code = NOT_FOUND, errorMessage = ENTITY_NOT_FOUND) => (req, res, next) => {
+const throwErrorIfEntityNotExist = (
+    model,
+    code = statusCodes.NOT_FOUND,
+    errorMessage = strings.ENTITY_NOT_FOUND
+) => (req, res, next) => {
     try {
         const key = model.collection.modelName;
         const entity = req[key];
@@ -46,12 +49,12 @@ const throwErrorIfEntityNotExist = (model, code = NOT_FOUND, errorMessage = ENTI
     }
 };
 
-const validateIncomingData = (validator, searchIn = BODY) => (req, res, next) => {
+const validateIncomingData = (validator, searchIn = strings.BODY) => (req, res, next) => {
     try {
         const { error } = validator.validate(req[searchIn]);
 
         if (error) {
-            throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+            throw new ErrorHandler(statusCodes.BAD_REQUEST, error.details[0].message);
         }
 
         next();

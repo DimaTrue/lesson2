@@ -2,11 +2,8 @@ const EmailTemplates = require('email-templates');
 const nodemailer = require('nodemailer');
 const path = require('path');
 
-const { EMAIL_BROADCAST, EMAIL_BROADCAST_PASS } = require('../configs/configs');
 const ErrorHandler = require('../errors/ErrorHandler');
-const { INTERNAL } = require('../configs/statusCodes.enum');
-const { NO_REPLY, WRONG_TEMPLATE } = require('../configs/stringConstants');
-
+const { configs, statusCodes, strings } = require('../configs');
 const templatesInfo = require('../email-templates');
 
 const templateParser = new EmailTemplates({
@@ -18,8 +15,8 @@ const templateParser = new EmailTemplates({
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: EMAIL_BROADCAST,
-        pass: EMAIL_BROADCAST_PASS
+        user: configs.EMAIL_BROADCAST,
+        pass: configs.EMAIL_BROADCAST_PASS
     }
 });
 
@@ -27,7 +24,7 @@ const sendMail = async (userMail, emailAction, context = {}) => {
     const templateToSend = templatesInfo[emailAction];
 
     if (!templateToSend) {
-        throw new ErrorHandler(INTERNAL, WRONG_TEMPLATE);
+        throw new ErrorHandler(statusCodes.INTERNAL, strings.WRONG_TEMPLATE);
     }
 
     const { templateName, subject } = templateToSend;
@@ -35,7 +32,7 @@ const sendMail = async (userMail, emailAction, context = {}) => {
     const html = await templateParser.render(templateName, { ...context });
 
     return transporter.sendMail({
-        from: NO_REPLY,
+        from: strings.NO_REPLY,
         to: userMail,
         subject,
         html

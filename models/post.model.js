@@ -1,14 +1,13 @@
 const { Schema, model } = require('mongoose');
 
-const { INVALID_CONTENT, INVALID_TITLE } = require('../configs/stringConstants');
-const { POST, USER } = require('../configs/dbTables.enum');
+const { dbTables: { POST, USER }, strings } = require('../configs');
 
 const postSchema = new Schema({
     title: {
         type: String,
         validate: {
             validator: (title) => title.length > 1 && title.length <= 30,
-            message: () => INVALID_TITLE
+            message: () => strings.INVALID_TITLE
         },
         required: true,
         trim: true
@@ -17,7 +16,7 @@ const postSchema = new Schema({
         type: String,
         validate: {
             validator: (content) => content.length > 1,
-            message: () => INVALID_CONTENT
+            message: () => strings.INVALID_CONTENT
         },
         required: true,
         trim: true
