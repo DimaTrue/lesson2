@@ -1,9 +1,13 @@
 const router = require('express').Router();
 
 const { User } = require('../models');
-const { EMAIL, EMAIL_ALREADY_EXIST, WRONG_LOGIN } = require('../configs/stringConstants');
+const {
+    EMAIL, EMAIL_ALREADY_EXIST, QUERY, WRONG_LOGIN, WRONG_DATA
+} = require('../configs/stringConstants');
 const { BAD_REQUEST, CONFLICT } = require('../configs/statusCodes.enum');
-const { loginValidator, signupValidator, } = require('../validators');
+const {
+    confirmValidator, forgotValidator, loginValidator, resetValidatorBody, resetValidatorQuery, signupValidator,
+} = require('../validators');
 const {
     confirmController,
     forgotPasswordController,
@@ -16,7 +20,9 @@ const {
 } = require('../controllers');
 const {
     checkAccessToken,
+    checkConfirmToken,
     checkRefreshToken,
+    checkResetToken,
     isEntityExistInDB,
     throwErrorIfEntityExist,
     throwErrorIfEntityNotExist,
@@ -41,13 +47,21 @@ router.post('/signup',
     throwErrorIfEntityExist(User, CONFLICT, EMAIL_ALREADY_EXIST),
     signUpController);
 
-router.get('/confirm', confirmController);
+router.get('/confirm',
+    validateIncomingData(confirmValidator, QUERY),
+    checkConfirmToken,
+    confirmController);
 
 router.post('/forgot_password',
+    validateIncomingData(forgotValidator),
     isEntityExistInDB(User, EMAIL),
-    throwErrorIfEntityNotExist(User, BAD_REQUEST, WRONG_LOGIN),
+    throwErrorIfEntityNotExist(User, BAD_REQUEST, WRONG_DATA),
     forgotPasswordController);
 
-router.post('/reset_password', resetPasswordController);
+router.post('/reset_password',
+    validateIncomingData(resetValidatorQuery, QUERY),
+    validateIncomingData(resetValidatorBody),
+    checkResetToken,
+    resetPasswordController);
 
 module.exports = router;

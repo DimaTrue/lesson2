@@ -22,7 +22,28 @@ const loginValidator = Joi.object({
     role: Joi.string().allow(...Object.values(roles)).trim()
 });
 
+const forgotValidator = Joi.object({
+    email: Joi.string().regex(EMAIL_REGEXP).trim().required(),
+});
+
+const confirmValidator = Joi.object({
+    confirm_token: Joi.string().trim().required()
+});
+
+const resetValidatorQuery = Joi.object({
+    reset_token: Joi.string().trim().required()
+});
+
+const resetValidatorBody = Joi.object({
+    new_password: Joi.string().alphanum().regex(PASSWORD_REGEXP).trim()
+        .required(),
+});
+
 module.exports = {
+    confirmValidator,
+    forgotValidator,
+    resetValidatorBody,
+    resetValidatorQuery,
     signupValidator,
     loginValidator
 };

@@ -1,6 +1,7 @@
 module.exports = {
     _ID: '_id',
     ACCOUNT_CREATED: 'Your account successfully created! Thanks for signing up.',
+    ACCOUNT_CONFIRMED: 'Your account successfully confirmed! Go to login page.',
     BODY: 'body',
     EMAIL: 'email',
     EMAIL_ALREADY_EXIST:
@@ -25,6 +26,7 @@ module.exports = {
     PASSWORD_CHANGED: 'Your password was successfully changed',
     POST_ID: 'post_id',
     POST_NOT_FOUND: 'Post not found.',
+    QUERY: 'query',
     REQUIRED_AGE: 'Age is required.',
     REQUIRED_EMAIL: 'Email is required.',
     REQUIRED_NAME: 'Name is required.',

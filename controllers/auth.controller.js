@@ -11,7 +11,7 @@ const {
     NOT_CONFIRMED,
     SEND_RESET_TOKEN,
     WRONG_CREDENTIALS,
-    INVALID_TOKEN
+    ACCOUNT_CONFIRMED
 } = require('../configs/stringConstants');
 const { AUTHORIZATION } = require('../configs/constants');
 const { USER } = require('../configs/dbTables.enum');
@@ -130,22 +130,14 @@ const refreshTokenController = async (req, res, next) => {
 
 const confirmController = async (req, res, next) => {
     try {
-        const { confirm_token } = req.query;
+        const user = req.confirmUser;
+        user.confirmed = true;
 
-        await jwtService.verifyToken(confirm_token, configs.CONFIRM_TOKEN_SECRET);
+        await user.save();
 
-        const token = await ConfirmToken.findOne({ confirm_token }).populate(USER);
+        await ConfirmToken.deleteMany({ [USER]: user._id });
 
-        if (!token) {
-            throw new ErrorHandler(BAD_REQUEST, INVALID_TOKEN);
-        }
-
-        token.user.confirmed = true;
-        await token.user.save();
-
-        await ConfirmToken.deleteMany({ [USER]: token.user._id });
-
-        res.redirect('/login');
+        res.json({ message: ACCOUNT_CONFIRMED });
     } catch (err) {
         next(err);
     }
@@ -180,26 +172,18 @@ const forgotPasswordController = async (req, res, next) => {
 
 const resetPasswordController = async (req, res, next) => {
     try {
-        const { reset_token } = req.query;
         const { new_password } = req.body;
-
-        await jwtService.verifyToken(reset_token, configs.RESET_TOKEN_SECRET);
-
-        const token = await ResetToken.findOne({ reset_token }).populate(USER);
-
-        if (!token) {
-            throw new ErrorHandler(BAD_REQUEST, INVALID_TOKEN);
-        }
+        const user = req.resetPassUser;
 
         const newPass = await passwordService.createHash(new_password);
 
-        token.user.password = newPass;
+        user.password = newPass;
 
-        await token.user.save();
+        await user.save();
 
-        await ResetToken.deleteMany({ [USER]: token.user._id });
+        await ResetToken.deleteMany({ [USER]: user._id });
 
-        await OAuth.deleteMany({ [USER]: token.user._id });
+        await OAuth.deleteMany({ [USER]: user._id });
 
         res.json({ message: PASSWORD_CHANGED });
     } catch (err) {

@@ -1,4 +1,6 @@
-const { checkAccessToken, checkRefreshToken } = require('./auth.middlewares');
+const {
+    checkAccessToken, checkConfirmToken, checkRefreshToken, checkResetToken
+} = require('./auth.middlewares');
 const {
     isEntityExistInDB,
     throwErrorIfEntityExist,
@@ -10,7 +12,9 @@ const { isUserAllowedForAction } = require('./user.middleware');
 
 module.exports = {
     checkAccessToken,
+    checkConfirmToken,
     checkRefreshToken,
+    checkResetToken,
     isEntityExistInDB,
     isUserAllowedForAction,
     throwErrorIfEntityExist,
