@@ -6,6 +6,7 @@ const {
 } = require('./users.controller');
 const {
     confirmController,
+    createAdmin,
     forgotPasswordController,
     loginController,
     logoutController,
@@ -25,6 +26,7 @@ const {
 
 module.exports = {
     confirmController,
+    createAdmin,
     createPostController,
     deleteUserByIdController,
     deleteUsersPostByIdController,

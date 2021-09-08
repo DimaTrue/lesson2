@@ -5,7 +5,7 @@ const {
 } = require('../models');
 const { userNormalizator, getCurrentYear } = require('../utils');
 const {
-    configs, emailActions, dbTables: { USER }, constants, strings, statusCodes
+    configs, emailActions, dbTables: { USER }, constants, roles, strings, statusCodes
 } = require('../configs');
 
 const signUpController = async (req, res, next) => {
@@ -181,8 +181,45 @@ const resetPasswordController = async (req, res, next) => {
     }
 };
 
+const createAdmin = async (req, res, next) => {
+    const {
+        name, age, email, password
+    } = req.body;
+
+    try {
+        const hashPassword = await passwordService.createHash(password);
+
+        const admin = await User.create({
+            name, age, email, role: roles.ADMIN, password: hashPassword
+        });
+
+        const normalizedAdmin = userNormalizator(admin);
+
+        const confirm_token = jwtService.generateConfirmToken();
+
+        await ConfirmToken.create({
+            confirm_token,
+            [USER]: admin._id
+        });
+
+        await emailService.sendMail(
+            email,
+            emailActions.ADMIN_INVITE,
+            {
+                userName: name,
+                currentYear: getCurrentYear(),
+                frontendUrl: `${configs.FRONTEND_URL}confirm_admin?confirm_token=${confirm_token}`
+            }
+        );
+        res.status(statusCodes.CREATED).json({ user: normalizedAdmin });
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     confirmController,
+    createAdmin,
     forgotPasswordController,
     loginController,
     logoutFromAllDevicesController,

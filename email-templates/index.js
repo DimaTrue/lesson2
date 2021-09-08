@@ -1,4 +1,4 @@
-const { emailActions: { RESET_PASS, WELCOME } } = require('../configs');
+const { emailActions: { ADMIN_INVITE, RESET_PASS, WELCOME } } = require('../configs');
 
 module.exports = {
     [WELCOME]: {
@@ -8,5 +8,9 @@ module.exports = {
     [RESET_PASS]: {
         templateName: 'reset',
         subject: 'Reset password'
+    },
+    [ADMIN_INVITE]: {
+        templateName: 'admin_invite',
+        subject: 'Invite to project'
     }
 };

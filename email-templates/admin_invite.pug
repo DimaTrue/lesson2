@@ -1,0 +1,12 @@
+extends container
+block content
+    div() 
+        h1(class="uk-padding ")
+            | Hello, #{userName}
+        div()
+            p()
+                | Your account as admin successfully created! 
+            p()  
+                | To confirm your account and define password please follow the link below:
+            a(href=frontendUrl)
+                | confirm accont. #{frontendUrl}

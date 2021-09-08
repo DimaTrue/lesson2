@@ -1,4 +1,5 @@
 module.exports = {
-    WELCOME: 'welcome',
-    RESET_PASS: 'reset'
+    ADMIN_INVITE: 'admin_invite',
+    RESET_PASS: 'reset',
+    WELCOME: 'welcome'
 };

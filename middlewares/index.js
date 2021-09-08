@@ -3,6 +3,7 @@ const {
 } = require('./auth.middlewares');
 const {
     isEntityExistInDB,
+    isRoleHasPermission,
     throwErrorIfEntityExist,
     throwErrorIfEntityNotExist,
     validateIncomingData
@@ -16,6 +17,7 @@ module.exports = {
     checkRefreshToken,
     checkResetToken,
     isEntityExistInDB,
+    isRoleHasPermission,
     isUserAllowedForAction,
     throwErrorIfEntityExist,
     throwErrorIfEntityNotExist,

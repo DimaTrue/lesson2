@@ -36,7 +36,7 @@ function _errorHandler(err, req, res, next) {
     res.status(err.status || statusCodes.INTERNAL).json({ message: err.message || strings.SOME_WRONG });
 }
 
-app.use('/', authRouter);
+app.use('/auth', authRouter);
 
 app.use('/users', userRouter);
 

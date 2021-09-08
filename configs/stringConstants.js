@@ -39,7 +39,7 @@ module.exports = {
     SUPER_ADMIN_UNDEFINED: 'Super admin credentials is not defined. Check variables in your .env file',
     USER_ID: 'user_id',
     USER_NOT_FOUND: 'User not found.',
-    WRONG_ACCESS: 'You do not have access rights to the content',
+    WRONG_ACCESS: 'You do not have access',
     WRONG_CREDENTIALS: 'Invalid credentials',
     WRONG_DATA: 'Wrong data.',
     WRONG_LOGIN:

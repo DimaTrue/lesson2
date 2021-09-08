@@ -15,7 +15,8 @@ const createSuperAdmin = async () => {
             age: configs.SUPER_ADMIN_AGE,
             email: configs.SUPER_ADMIN_EMAIL,
             role: roles.SUPER_ADMIN,
-            password: hashPassword
+            password: hashPassword,
+            confirmed: true
         });
 
         return;

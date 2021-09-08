@@ -1,12 +1,13 @@
 const router = require('express').Router();
 
 const { User } = require('../models');
-const { statusCodes, strings } = require('../configs');
+const { roles, statusCodes, strings } = require('../configs');
 const {
     confirmValidator, forgotValidator, loginValidator, resetValidatorBody, resetValidatorQuery, signupValidator,
 } = require('../validators');
 const {
     confirmController,
+    createAdmin,
     forgotPasswordController,
     loginController,
     logoutController,
@@ -21,6 +22,7 @@ const {
     checkRefreshToken,
     checkResetToken,
     isEntityExistInDB,
+    isRoleHasPermission,
     throwErrorIfEntityExist,
     throwErrorIfEntityNotExist,
     validateIncomingData
@@ -60,5 +62,7 @@ router.post('/reset_password',
     validateIncomingData(resetValidatorBody),
     checkResetToken,
     resetPasswordController);
+
+router.post('/create_admin', checkAccessToken, isRoleHasPermission([roles.SUPER_ADMIN]), createAdmin);
 
 module.exports = router;

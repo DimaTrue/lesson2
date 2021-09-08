@@ -63,8 +63,23 @@ const validateIncomingData = (validator, searchIn = strings.BODY) => (req, res, 
     }
 };
 
+const isRoleHasPermission = (rolesList = []) => (req, res, next) => {
+    try {
+        const { role } = req.currentUser;
+
+        if (!rolesList.includes(role)) {
+            throw new ErrorHandler(statusCodes.FORBIDDEN, strings.WRONG_ACCESS);
+        }
+
+        next();
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     isEntityExistInDB,
+    isRoleHasPermission,
     throwErrorIfEntityExist,
     throwErrorIfEntityNotExist,
     validateIncomingData
