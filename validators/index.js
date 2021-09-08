@@ -1,5 +1,11 @@
 const {
-    confirmValidator, forgotValidator, resetValidatorBody, resetValidatorQuery, loginValidator, signupValidator
+    confirmAdminValidatorBody,
+    confirmValidator,
+    forgotValidator,
+    resetValidatorBody,
+    resetValidatorQuery,
+    loginValidator,
+    signupValidator
 } = require('./auth.validator');
 const { updateUserValidator, userIdParamsValidator } = require('./user.validator');
 const {
@@ -7,6 +13,7 @@ const {
 } = require('./post.validator');
 
 module.exports = {
+    confirmAdminValidatorBody,
     confirmValidator,
     createPostValidator,
     forgotValidator,

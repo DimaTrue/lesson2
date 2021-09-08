@@ -217,7 +217,29 @@ const createAdmin = async (req, res, next) => {
     }
 };
 
+const confirmAdmin = async (req, res, next) => {
+    try {
+        const { password } = req.body;
+
+        const hashPassword = await passwordService.createHash(password);
+
+        const admin = req.confirmUser;
+
+        admin.confirmed = true;
+        admin.password = hashPassword;
+
+        await admin.save();
+
+        await ConfirmToken.deleteMany({ [USER]: admin._id });
+
+        res.json({ message: strings.ACCOUNT_CONFIRMED });
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
+    confirmAdmin,
     confirmController,
     createAdmin,
     forgotPasswordController,

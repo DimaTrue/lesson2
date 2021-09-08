@@ -3,9 +3,16 @@ const router = require('express').Router();
 const { User } = require('../models');
 const { roles, statusCodes, strings } = require('../configs');
 const {
-    confirmValidator, forgotValidator, loginValidator, resetValidatorBody, resetValidatorQuery, signupValidator,
+    confirmAdminValidatorBody,
+    confirmValidator,
+    forgotValidator,
+    loginValidator,
+    resetValidatorBody,
+    resetValidatorQuery,
+    signupValidator,
 } = require('../validators');
 const {
+    confirmAdmin,
     confirmController,
     createAdmin,
     forgotPasswordController,
@@ -63,6 +70,17 @@ router.post('/reset_password',
     checkResetToken,
     resetPasswordController);
 
-router.post('/create_admin', checkAccessToken, isRoleHasPermission([roles.SUPER_ADMIN]), createAdmin);
+router.post('/create_admin',
+    validateIncomingData(signupValidator),
+    checkAccessToken,
+    isRoleHasPermission([roles.SUPER_ADMIN]),
+    isEntityExistInDB(User, strings.EMAIL),
+    throwErrorIfEntityExist(User, statusCodes.CONFLICT, strings.EMAIL_ALREADY_EXIST),
+    createAdmin);
+
+router.post('/confirm_admin',
+    validateIncomingData(confirmAdminValidatorBody),
+    checkConfirmToken,
+    confirmAdmin);
 
 module.exports = router;

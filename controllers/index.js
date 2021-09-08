@@ -5,6 +5,7 @@ const {
     updateUserByIdController
 } = require('./users.controller');
 const {
+    confirmAdmin,
     confirmController,
     createAdmin,
     forgotPasswordController,
@@ -25,6 +26,7 @@ const {
 } = require('./posts.controller');
 
 module.exports = {
+    confirmAdmin,
     confirmController,
     createAdmin,
     createPostController,

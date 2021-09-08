@@ -37,7 +37,13 @@ const resetValidatorBody = Joi.object({
         .required(),
 });
 
+const confirmAdminValidatorBody = Joi.object({
+    password: Joi.string().alphanum().regex(constants.PASSWORD_REGEXP).trim()
+        .required(),
+});
+
 module.exports = {
+    confirmAdminValidatorBody,
     confirmValidator,
     forgotValidator,
     resetValidatorBody,
