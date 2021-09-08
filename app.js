@@ -6,6 +6,7 @@ require('dotenv').config();
 const ErrorHandler = require('./errors/ErrorHandler');
 const { authRouter, userRouter, postRouter } = require('./routers');
 const { configs, statusCodes, strings } = require('./configs');
+const { createSuperAdminIfNotExist } = require('./utils');
 
 const app = express();
 
@@ -18,8 +19,11 @@ const runApp = async () => {
             { useUnifiedTopology: true, useNewUrlParser: true });
 
         if (result) {
-            // eslint-disable-next-line no-console
-            app.listen(configs.PORT, () => console.log(`${strings.SERVER_RUNNING} ${configs.PORT}`));
+            app.listen(configs.PORT, () => {
+                // eslint-disable-next-line no-console
+                console.log(`${strings.SERVER_RUNNING} ${configs.PORT}`);
+                createSuperAdminIfNotExist();
+            });
         }
     } catch (err) {
         // eslint-disable-next-line no-console
