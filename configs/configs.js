@@ -1,6 +1,10 @@
 module.exports = {
     ACCESS_TOKEN_LIFE: '15m',
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || '612f7d403c644993af60d1deacc',
+    AWS_S3_ACCESS_KEY: process.env.AWS_S3_ACCESS_KEY,
+    AWS_S3_NAME: process.env.AWS_S3_NAME,
+    AWS_S3_REGION: process.env.AWS_S3_REGION,
+    AWS_S3_SECRET_KEY: process.env.AWS_S3_SECRET_KEY,
     CONFIRM_TOKEN_SECRET: process.env.CONFIRM_TOKEN_SECRET || '613asdas67fab0df72e86f8028c76',
     CONFIRM_TOKEN_LIFE: '2h',
     EMAIL_BROADCAST: process.env.EMAIL_BROADCAST || 'test@email.com',

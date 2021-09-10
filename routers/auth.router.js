@@ -28,6 +28,7 @@ const {
     checkConfirmToken,
     checkRefreshToken,
     checkResetToken,
+    checkUsersAvatar,
     isEntityExistInDB,
     isRoleHasPermission,
     throwErrorIfEntityExist,
@@ -49,6 +50,7 @@ router.post('/token', checkRefreshToken, refreshTokenController);
 
 router.post('/signup',
     validateIncomingData(signupValidator),
+    checkUsersAvatar,
     isEntityExistInDB(User, strings.EMAIL),
     throwErrorIfEntityExist(User, statusCodes.CONFLICT, strings.EMAIL_ALREADY_EXIST),
     signUpController);

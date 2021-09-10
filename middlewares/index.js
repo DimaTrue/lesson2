@@ -9,13 +9,16 @@ const {
     validateIncomingData
 } = require('./common.middlewares');
 
-const { isUserAllowedForAction } = require('./user.middleware');
+const { checkUsersAvatar } = require('./file.middlewares');
+
+const { isUserAllowedForAction } = require('./user.middlewares');
 
 module.exports = {
     checkAccessToken,
     checkConfirmToken,
     checkRefreshToken,
     checkResetToken,
+    checkUsersAvatar,
     isEntityExistInDB,
     isRoleHasPermission,
     isUserAllowedForAction,

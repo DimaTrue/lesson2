@@ -3,22 +3,31 @@ const { emailService, passwordService, jwtService } = require('../services');
 const {
     ConfirmToken, User, OAuth, ResetToken
 } = require('../models');
-const { userNormalizator, getCurrentYear } = require('../utils');
+const { userNormalizator, getCurrentYear, uploadImage } = require('../utils');
 const {
     configs, emailActions, dbTables: { USER }, constants, roles, strings, statusCodes
 } = require('../configs');
 
 const signUpController = async (req, res, next) => {
-    const {
-        name, age, email, password, role
-    } = req.body;
-
     try {
+        const {
+            name, age, email, password, role
+        } = req.body;
+        const { avatar } = req.files;
+
         const hashPassword = await passwordService.createHash(password);
 
-        const user = await User.create({
+        let user = await User.create({
             name, age, email, role, password: hashPassword
         });
+
+        if (avatar) {
+            const { _id } = user;
+
+            const uploadImageResult = await uploadImage(avatar, strings.USER, _id);
+
+            user = await User.findByIdAndUpdate(_id, { avatar: uploadImageResult.Location }, { new: true });
+        }
 
         const normalizedUser = userNormalizator(user);
 
@@ -38,6 +47,7 @@ const signUpController = async (req, res, next) => {
                 frontendUrl: `${configs.FRONTEND_URL}confirm?confirm_token=${confirm_token}`
             }
         );
+
         res.status(statusCodes.CREATED).json({ user: normalizedUser });
     } catch (err) {
         next(err);

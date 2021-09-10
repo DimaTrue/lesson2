@@ -74,6 +74,9 @@ const userSchema = new Schema({
     confirmed: {
         type: Boolean,
         default: false
+    },
+    avatar: {
+        type: String,
     }
 }, { timestamps: true });
 
