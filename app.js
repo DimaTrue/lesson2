@@ -11,6 +11,7 @@ const ErrorHandler = require('./errors/ErrorHandler');
 const { authRouter, userRouter, postRouter } = require('./routers');
 const { configs, statusCodes, strings } = require('./configs');
 const { createSuperAdminIfNotExist } = require('./utils');
+const cronJobs = require('./cron');
 
 const app = express();
 
@@ -41,6 +42,7 @@ const runApp = async () => {
                 // eslint-disable-next-line no-console
                 console.log(`${strings.SERVER_RUNNING} ${configs.PORT}`);
                 createSuperAdminIfNotExist();
+                cronJobs();
             });
         }
     } catch (err) {
