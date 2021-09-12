@@ -3,6 +3,7 @@ module.exports = {
     ACCOUNT_CREATED: 'Your account successfully created! Thanks for signing up.',
     ACCOUNT_CONFIRMED: 'Your account successfully confirmed! Go to login page.',
     BODY: 'body',
+    CORS_NOT_ALLOWED: 'Cors not allowed',
     EMAIL: 'email',
     EMAIL_ALREADY_EXIST:
     'This email already exists. Please check your email and try again. Or login.',

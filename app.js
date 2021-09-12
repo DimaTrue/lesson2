@@ -1,6 +1,9 @@
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const expressFileUpload = require('express-fileupload');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 require('dotenv').config();
 
@@ -11,9 +14,22 @@ const { createSuperAdminIfNotExist } = require('./utils');
 
 const app = express();
 
+app.use(cors({ origin: _configureCors }));
+app.use(rateLimit({
+    windowMs: configs.RATE_LIMIT_PERIOD,
+    max: configs.RATE_LIMIT_MAX_REQUESTS
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(expressFileUpload());
+app.use(helmet());
+
+if (process.env.ENV === 'dev') {
+    // eslint-disable-next-line import/no-extraneous-dependencies
+    const morgan = require('morgan');
+
+    app.use(morgan('dev'));
+}
 
 const runApp = async () => {
     try {
@@ -36,6 +52,20 @@ const runApp = async () => {
 // eslint-disable-next-line no-unused-vars
 function _errorHandler(err, req, res, next) {
     res.status(err.status || statusCodes.INTERNAL).json({ message: err.message || strings.SOME_WRONG });
+}
+
+function _configureCors(origin, callback) {
+    const whiteList = configs.ALLOWED_ORIGIN.split(';');
+
+    if (!origin) {
+        return callback(null, true);
+    }
+
+    if (!whiteList.includes(origin)) {
+        return callback(new Error(strings.CORS_NOT_ALLOWED), false);
+    }
+
+    return callback(null, true);
 }
 
 app.use('/auth', authRouter);

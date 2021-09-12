@@ -1,6 +1,7 @@
 module.exports = {
     ACCESS_TOKEN_LIFE: '15m',
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || '612f7d403c644993af60d1deacc',
+    ALLOWED_ORIGIN: process.env.ALLOWED_ORIGIN || 'http://localhost:3000;http://localhost:5000',
     AWS_S3_ACCESS_KEY: process.env.AWS_S3_ACCESS_KEY,
     AWS_S3_NAME: process.env.AWS_S3_NAME,
     AWS_S3_REGION: process.env.AWS_S3_REGION,
@@ -12,6 +13,8 @@ module.exports = {
     FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5000/',
     MONGO_URL: process.env.MONGO_URL || 'mongodb://localhost:27017/usersDbInoxoft',
     PORT: process.env.PORT || 5000,
+    RATE_LIMIT_PERIOD: process.env.RATE_LIMIT_PERIOD || 15 * 60 * 1000,
+    RATE_LIMIT_MAX_REQUESTS: process.env.RATE_LIMIT_MAX_REQUESTS || 1000,
     REFRESH_TOKEN_LIFE: '31d',
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '612f8e91ef4212bcf103c29bref',
     RESET_TOKEN_LIFE: '2h',
