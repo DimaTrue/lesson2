@@ -13,7 +13,6 @@ const signUpController = async (req, res, next) => {
         const {
             name, age, email, password, role
         } = req.body;
-        const { avatar } = req.files;
 
         const hashPassword = await passwordService.createHash(password);
 
@@ -21,10 +20,10 @@ const signUpController = async (req, res, next) => {
             name, age, email, role, password: hashPassword
         });
 
-        if (avatar) {
+        if (req.files && req.files.avatar) {
             const { _id } = user;
 
-            const uploadImageResult = await uploadImage(avatar, strings.USER, _id);
+            const uploadImageResult = await uploadImage(req.files.avatar, strings.USER, _id);
 
             user = await User.findByIdAndUpdate(_id, { avatar: uploadImageResult.Location }, { new: true });
         }

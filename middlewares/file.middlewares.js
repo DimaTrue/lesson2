@@ -3,13 +3,13 @@ const { constants, statusCodes, strings } = require('../configs');
 
 const checkUsersAvatar = (req, res, next) => {
     try {
-        const { avatar } = req.files;
-
-        if (!avatar) {
+        if (!req.files || !req.files.avatar) {
             next();
+
+            return;
         }
 
-        const { name, size, mimetype } = avatar;
+        const { name, size, mimetype } = req.files.avatar;
 
         if (!constants.PHOTOS_MEMETYPES.includes(mimetype)) {
             throw new ErrorHandler(statusCodes.BAD_REQUEST, `${strings.WRONG_FILE_FORMAT} ${name}`);
