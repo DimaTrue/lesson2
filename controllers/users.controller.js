@@ -4,7 +4,9 @@ const { dbTables: { USER }, statusCodes } = require('../configs');
 
 const getUsersListController = async (req, res, next) => {
     try {
-        const users = await User.find({});
+        const { page, perPage } = req.query;
+
+        const users = await User.find().limit(+perPage).skip((page - 1) * perPage);
 
         const responseUsersArr = users.map((user) => userNormalizator(user));
 

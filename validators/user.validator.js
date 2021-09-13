@@ -15,7 +15,13 @@ const userIdParamsValidator = Joi.object({
     user_id: idSubScheme
 });
 
+const getUsersQueryValidator = Joi.object({
+    page: Joi.string().trim().required(),
+    perPage: Joi.string().trim().required()
+});
+
 module.exports = {
+    getUsersQueryValidator,
     updateUserValidator,
     userIdParamsValidator,
     idSubScheme

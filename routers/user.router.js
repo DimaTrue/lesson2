@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const { User } = require('../models');
 const { statusCodes, strings } = require('../configs');
-const { updateUserValidator, userIdParamsValidator } = require('../validators');
+const { getUsersQueryValidator, updateUserValidator, userIdParamsValidator } = require('../validators');
 const {
     deleteUserByIdController, getUsersListController, getUserController, updateUserByIdController
 } = require('../controllers');
@@ -10,7 +10,7 @@ const {
     checkAccessToken, isEntityExistInDB, isUserAllowedForAction, throwErrorIfEntityNotExist, validateIncomingData
 } = require('../middlewares');
 
-router.get('/', getUsersListController);
+router.get('/', validateIncomingData(getUsersQueryValidator, strings.QUERY), getUsersListController);
 
 router.put('/:user_id',
     validateIncomingData(userIdParamsValidator, strings.PARAMS),

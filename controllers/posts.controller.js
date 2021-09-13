@@ -3,7 +3,9 @@ const { dbTables: { USER }, statusCodes } = require('../configs');
 
 const getAllPostsController = async (req, res, next) => {
     try {
-        const posts = await Post.find({});
+        const { page, perPage } = req.query;
+
+        const posts = await Post.find().limit(+perPage).skip((page - 1) * perPage);
 
         res.json({ posts });
     } catch (err) {
@@ -13,7 +15,9 @@ const getAllPostsController = async (req, res, next) => {
 
 const getPostsListByUserController = async (req, res, next) => {
     try {
-        const posts = await Post.find({ [USER]: req.user._id });
+        const { page, perPage } = req.query;
+
+        const posts = await Post.find({ [USER]: req.user._id }).limit(+perPage).skip((page - 1) * perPage);
 
         res.json({ posts });
     } catch (err) {

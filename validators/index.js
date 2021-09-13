@@ -7,9 +7,14 @@ const {
     loginValidator,
     signupValidator
 } = require('./auth.validator');
-const { updateUserValidator, userIdParamsValidator } = require('./user.validator');
+const { getUsersQueryValidator, updateUserValidator, userIdParamsValidator } = require('./user.validator');
 const {
-    createPostValidator, postIdParamsValidator, updatePostValidator, userIdAndPostIdValidator
+    createPostValidator,
+    getPostsQueryValidator,
+    getPostsByUserQueryValidator,
+    postIdParamsValidator,
+    updatePostValidator,
+    userIdAndPostIdValidator
 } = require('./post.validator');
 
 module.exports = {
@@ -17,6 +22,9 @@ module.exports = {
     confirmValidator,
     createPostValidator,
     forgotValidator,
+    getPostsQueryValidator,
+    getPostsByUserQueryValidator,
+    getUsersQueryValidator,
     loginValidator,
     postIdParamsValidator,
     resetValidatorBody,

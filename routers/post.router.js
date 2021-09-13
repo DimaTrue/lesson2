@@ -14,10 +14,16 @@ const {
     isEntityExistInDB, throwErrorIfEntityNotExist, validateIncomingData, checkAccessToken, isUserAllowedForAction,
 } = require('../middlewares');
 const {
-    createPostValidator, updatePostValidator, userIdAndPostIdValidator, postIdParamsValidator, userIdParamsValidator
+    createPostValidator,
+    getPostsQueryValidator,
+    getPostsByUserQueryValidator,
+    updatePostValidator,
+    userIdAndPostIdValidator,
+    postIdParamsValidator,
+    userIdParamsValidator
 } = require('../validators');
 
-router.get('/', getAllPostsController);
+router.get('/', validateIncomingData(getPostsQueryValidator, strings.QUERY), getAllPostsController);
 
 router.get('/:post_id',
     validateIncomingData(postIdParamsValidator, strings.PARAMS),
@@ -26,6 +32,7 @@ router.get('/:post_id',
     getPostByIdController);
 
 router.get('/by_user/:user_id',
+    validateIncomingData(getPostsByUserQueryValidator, strings.QUERY),
     validateIncomingData(userIdParamsValidator, strings.PARAMS),
     isEntityExistInDB(User, strings.USER_ID, strings.PARAMS, strings._ID),
     throwErrorIfEntityNotExist(User, statusCodes.NOT_FOUND, strings.USER_NOT_FOUND),

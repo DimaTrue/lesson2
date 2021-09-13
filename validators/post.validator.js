@@ -23,8 +23,20 @@ const userIdAndPostIdValidator = Joi.object({
     post_id: idSubScheme,
 });
 
+const getPostsQueryValidator = Joi.object({
+    page: Joi.string().trim().required(),
+    perPage: Joi.string().trim().required()
+});
+
+const getPostsByUserQueryValidator = Joi.object({
+    page: Joi.string().trim().required(),
+    perPage: Joi.string().trim().required()
+});
+
 module.exports = {
     createPostValidator,
+    getPostsQueryValidator,
+    getPostsByUserQueryValidator,
     updatePostValidator,
     userIdAndPostIdValidator,
     postIdParamsValidator
