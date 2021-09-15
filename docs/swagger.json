@@ -1,0 +1,196 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Inoxoft Documentation",
+        "version": "0.0.1",
+        "description": "Inoxoft Course Node.js"
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": ["Users"],
+                "description": "Get all users",
+                "operationId": "getAllUsers",
+                "parameters": [
+                    {
+                        "name": "perPage",
+                        "in": "query",
+                        "description": "How many items will be showed in one page",
+                        "required": false,
+                        "default": 20,
+                        "example": 10,
+                        "type": "number"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page number",
+                        "required": false,
+                        "default": 1,
+                        "example": 3,
+                        "type": "number"
+                    }
+                ],
+                "responses":{
+                    "200": {
+                        "description": "Success response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Email is not valid"
+                                },
+                                "data": {
+                                    "description": "customer name",
+                                    "type": "string",
+                                    "example": "example@email.com"
+                                },
+                                "customCode": {
+                                    "description": "Custome error",
+                                    "type": "number",
+                                    "example": 4001
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Users"],
+                "description": "Create user",
+                "operationId": "createUser",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "body",
+                        "description": "How many items will be showed in one page",
+                        "required": true,
+                        "default": "Ivan",
+                        "example": 10,
+                        "type": "number"
+                    },
+                    {
+                        "name": "email",
+                        "in": "body",
+                        "description": "page number",
+                        "required": true,
+                        "default": "ivan@email.com",
+                        "example": 3,
+                        "type": "number"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Auth token",
+                        "required": true,
+                        "default": "authtoken123",
+                        "example": "authtoken123",
+                        "type": "string"
+                    }
+                ],
+                "responses":{
+                    "200": {
+                        "description": "Success response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "name": {
+                                        "description": "customer name",
+                                        "type": "string",
+                                        "example": "Igor"
+                                    },
+                                    "email": {
+                                        "description": "customer name",
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/ErrorSchema"
+                        }
+                    }
+                }
+            }
+
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "description": "customer ID",
+                    "type": "string",
+                    "example": "1234exampleid"
+                },
+                "name": {
+                    "description": "customer name",
+                    "type": "string",
+                    "example": "Igor"
+                },
+                "email": {
+                    "description": "customer name",
+                    "type": "string",
+                    "example": "example@email.com"
+                }
+            }
+        },
+        "Post": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "description": "customer ID",
+                    "type": "string",
+                    "example": "1234exampleid"
+                },
+                "title": {
+                    "description": "customer name",
+                    "type": "string",
+                    "example": "Igor"
+                },
+                "content": {
+                    "description": "customer name",
+                    "type": "string",
+                    "example": "example@email.com"
+                }
+            }
+        },
+        "ErrorSchema": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Email is not valid"
+                },
+                "data": {
+                    "description": "customer name",
+                    "type": "string",
+                    "example": "example@email.com"
+                },
+                "customCode": {
+                    "description": "Custome error",
+                    "type": "number",
+                    "example": 4001
+                }
+            }
+        }
+    }
+
+}

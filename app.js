@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const expressFileUpload = require('express-fileupload');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const swaggerUi = require('swagger-ui-express');
 
 require('dotenv').config();
 
@@ -12,9 +13,11 @@ const { authRouter, userRouter, postRouter } = require('./routers');
 const { configs, statusCodes, strings } = require('./configs');
 const { createSuperAdminIfNotExist } = require('./utils');
 const cronJobs = require('./cron');
+const swaggerJson = require('./docs/swagger.json');
 
 const app = express();
 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJson, { explorer: true }));
 app.use(cors({ origin: _configureCors }));
 app.use(rateLimit({
     windowMs: configs.RATE_LIMIT_PERIOD,
