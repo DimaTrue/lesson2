@@ -16,27 +16,94 @@
                         "name": "perPage",
                         "in": "query",
                         "description": "How many items will be showed in one page",
-                        "required": false,
+                        "required": true,
                         "default": 20,
-                        "example": 10,
+                        "example": 20,
                         "type": "number"
                     },
                     {
                         "name": "page",
                         "in": "query",
                         "description": "page number",
-                        "required": false,
+                        "required": true,
                         "default": 1,
-                        "example": 3,
+                        "example": 1,
                         "type": "number"
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "order",
+                        "required": false,
+                        "default": "asc",
+                        "example": "asc",
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email",
+                        "required": false,
+                        "default": "ivan@email.com",
+                        "example": "ivan@email.com",
+                        "type": "string"
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "role",
+                        "required": false,
+                        "default": "user",
+                        "example": "user",
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "name",
+                        "required": false,
+                        "default": "Jack",
+                        "example": "Jack",
+                        "type": "string"
+                    },
+                    {
+                        "name": "age.lte",
+                        "in": "query",
+                        "description": "Lower or equal value of age",
+                        "required": false,
+                        "default": 18,
+                        "example": 18,
+                        "type": "number"
+                    },
+                    {
+                        "name": "age.gte",
+                        "in": "query",
+                        "description": "Greater or equal value of age",
+                        "required": false,
+                        "default": 18,
+                        "example": 18,
+                        "type": "number"
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Value for sorting",
+                        "required": false,
+                        "default": "createdAt",
+                        "example": "createdAt",
+                        "type": "string"
                     }
                 ],
-                "responses":{
+                "responses": {
                     "200": {
                         "description": "Success response",
                         "schema": {
                             "type": "array",
                             "items": {
+                                "page": "1",
+                                "limit": 1,
+                                "count": 1,
+                                "pageCount": 1,
                                 "$ref": "#/definitions/User"
                             }
                         }
@@ -44,79 +111,60 @@
                     "400": {
                         "description": "Bad request",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "message": {
-                                    "type": "string",
-                                    "example": "Email is not valid"
-                                },
-                                "data": {
-                                    "description": "customer name",
-                                    "type": "string",
-                                    "example": "example@email.com"
-                                },
-                                "customCode": {
-                                    "description": "Custome error",
-                                    "type": "number",
-                                    "example": 4001
-                                }
-                            }
+                            "$ref": "#/definitions/ErrorSchema"
                         }
                     }
                 }
-            },
+            }
+        },
+        "/sighup": {
             "post": {
-                "tags": ["Users"],
+                "tags": ["Auth"],
                 "description": "Create user",
                 "operationId": "createUser",
                 "parameters": [
                     {
                         "name": "name",
                         "in": "body",
-                        "description": "How many items will be showed in one page",
+                        "description": "Name of user",
                         "required": true,
                         "default": "Ivan",
-                        "example": 10,
+                        "example": "Ivan",
+                        "type": "string"
+                    },
+                    {
+                        "name": "age",
+                        "in": "body",
+                        "description": "Age of user",
+                        "required": true,
+                        "default": 18,
+                        "example": 18,
                         "type": "number"
                     },
                     {
                         "name": "email",
                         "in": "body",
-                        "description": "page number",
+                        "description": "Email of user",
                         "required": true,
                         "default": "ivan@email.com",
-                        "example": 3,
-                        "type": "number"
+                        "example": "ivan@email.com",
+                        "type": "string"
                     },
                     {
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Auth token",
+                        "name": "password",
+                        "in": "body",
+                        "description": "Password of user",
                         "required": true,
-                        "default": "authtoken123",
-                        "example": "authtoken123",
+                        "default": "Password123",
+                        "example": "Password123",
                         "type": "string"
                     }
                 ],
-                "responses":{
+                "responses": {
                     "200": {
                         "description": "Success response",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "properties": {
-                                    "name": {
-                                        "description": "customer name",
-                                        "type": "string",
-                                        "example": "Igor"
-                                    },
-                                    "email": {
-                                        "description": "customer name",
-                                        "type": "string",
-                                        "example": "example@email.com"
-                                    }
-                                }
-                            }
+                            "$ref": "#/definitions/User"
                         }
                     },
                     "400": {
@@ -128,7 +176,6 @@
                     }
                 }
             }
-
         }
     },
     "definitions": {
@@ -145,10 +192,50 @@
                     "type": "string",
                     "example": "Igor"
                 },
+                "age": {
+                    "description": "customer age",
+                    "type": "number",
+                    "example": "18"
+                },
                 "email": {
                     "description": "customer name",
                     "type": "string",
                     "example": "example@email.com"
+                },
+                "posts": {
+                    "description": "customer posts",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ErrorSchema"
+                    },
+                    "example": [
+                        {
+                            "_id": "1234example",
+                            "title": "Post title",
+                            "content": "Post content",
+                            "owner": "asdf123sdf"
+                        }
+                    ]
+                },
+                "role": {
+                    "description": "customer role",
+                    "type": "string",
+                    "example": "user"
+                },
+                "confirmed": {
+                    "description": "Did customer confirm signup from email message?",
+                    "type": "boolean",
+                    "example": false
+                },
+                "createdAt": {
+                    "description": "Date when user created account",
+                    "type": "string",
+                    "example": "2020-01-01T20:50:55.086Z"
+                },
+                "updatedAt": {
+                    "description": "Date when user updated account data",
+                    "type": "string",
+                    "example": "2020-01-01T20:50:55.086Z"
                 }
             }
         },
@@ -178,19 +265,8 @@
                 "message": {
                     "type": "string",
                     "example": "Email is not valid"
-                },
-                "data": {
-                    "description": "customer name",
-                    "type": "string",
-                    "example": "example@email.com"
-                },
-                "customCode": {
-                    "description": "Custome error",
-                    "type": "number",
-                    "example": 4001
                 }
             }
         }
     }
-
 }
