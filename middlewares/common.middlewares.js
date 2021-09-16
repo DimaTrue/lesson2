@@ -15,6 +15,32 @@ const isEntityExistInDB = (model, property, searchIn = strings.BODY, dbField = p
     }
 };
 
+const isEntityExistInDbByOwnerQuery = (
+    model, property, searchIn = strings.BODY, dbField = property
+) => async (req, res, next) => {
+    try {
+        const value = req[searchIn][property];
+        const key = model.collection.modelName;
+
+        if (!value) {
+            next();
+
+            return;
+        }
+
+        const entity = await model.findOne({ [dbField]: value });
+
+        if (!entity) {
+            throw new ErrorHandler(statusCodes.BAD_REQUEST, strings.OWNER_NOT_FOUND);
+        }
+
+        req[key] = entity;
+        next();
+    } catch (err) {
+        next(err);
+    }
+};
+
 const throwErrorIfEntityExist = (model, code = statusCodes.CONFLICT, errorMessage = strings.ENTITY_EXIST) => (req, res, next) => {
     try {
         const key = model.collection.modelName;
@@ -79,6 +105,7 @@ const isRoleHasPermission = (rolesList = []) => (req, res, next) => {
 
 module.exports = {
     isEntityExistInDB,
+    isEntityExistInDbByOwnerQuery,
     isRoleHasPermission,
     throwErrorIfEntityExist,
     throwErrorIfEntityNotExist,

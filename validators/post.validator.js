@@ -28,17 +28,12 @@ const getPostsQueryValidator = Joi.object({
     perPage: Joi.string().trim().required(),
     title: Joi.string().trim(),
     content: Joi.string().trim(),
-});
-
-const getPostsByUserQueryValidator = Joi.object({
-    page: Joi.string().trim().required(),
-    perPage: Joi.string().trim().required()
+    owner: Joi.string().min(24).max(24).trim(),
 });
 
 module.exports = {
     createPostValidator,
     getPostsQueryValidator,
-    getPostsByUserQueryValidator,
     updatePostValidator,
     userIdAndPostIdValidator,
     postIdParamsValidator

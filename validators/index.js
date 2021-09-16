@@ -11,7 +11,6 @@ const { getUsersQueryValidator, updateUserValidator, userIdParamsValidator } = r
 const {
     createPostValidator,
     getPostsQueryValidator,
-    getPostsByUserQueryValidator,
     postIdParamsValidator,
     updatePostValidator,
     userIdAndPostIdValidator
@@ -23,7 +22,6 @@ module.exports = {
     createPostValidator,
     forgotValidator,
     getPostsQueryValidator,
-    getPostsByUserQueryValidator,
     getUsersQueryValidator,
     loginValidator,
     postIdParamsValidator,

@@ -20,7 +20,6 @@ const {
     deleteUsersPostByIdController,
     editPostController,
     getAllPostsController,
-    getPostsListByUserController,
     createPostController,
     getPostByIdController,
 } = require('./posts.controller');
@@ -36,7 +35,6 @@ module.exports = {
     forgotPasswordController,
     getAllPostsController,
     getPostByIdController,
-    getPostsListByUserController,
     getUserController,
     getUsersListController,
     refreshTokenController,

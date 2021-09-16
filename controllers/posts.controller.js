@@ -4,21 +4,9 @@ const { postService } = require('../services');
 
 const getAllPostsController = async (req, res, next) => {
     try {
-        const data = await postService.findAllPosts(req.query);
+        const data = await postService.findAllPosts(req);
 
         res.json(data);
-    } catch (err) {
-        next(err);
-    }
-};
-
-const getPostsListByUserController = async (req, res, next) => {
-    try {
-        const { page, perPage } = req.query;
-
-        const posts = await Post.find({ [USER]: req.user._id }).limit(+perPage).skip((page - 1) * perPage);
-
-        res.json({ posts });
     } catch (err) {
         next(err);
     }
@@ -82,7 +70,6 @@ const editPostController = async (req, res, next) => {
 
 module.exports = {
     getAllPostsController,
-    getPostsListByUserController,
     getPostByIdController,
     createPostController,
     deleteUsersPostByIdController,

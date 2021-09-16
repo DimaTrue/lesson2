@@ -1,7 +1,8 @@
 const { Post } = require('../models');
 
 module.exports = {
-    findAllPosts: async (query = {}) => {
+    findAllPosts: async (request) => {
+        const { query = {}, user = {} } = request;
         const {
             perPage = 20, page = 1, sortBy = 'createdAt', order = 'asc', ...filters
         } = query;
@@ -14,6 +15,10 @@ module.exports = {
 
         filtersArray.forEach((key) => {
             switch (key) {
+                case 'owner':
+                    filterObject.user = user._id;
+                    break;
+
                 case 'title':
                     filterObject.title = { $regex: `^${filters.title}.*`, $options: 'gi' };
                     break;

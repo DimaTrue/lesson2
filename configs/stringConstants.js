@@ -24,6 +24,8 @@ module.exports = {
     INVALID_TOKEN: 'Invalid token',
     NO_REPLY: 'No reply',
     NOT_CONFIRMED: 'Your account is not confirmed. Please, check your email and confirm account',
+    OWNER: 'owner',
+    OWNER_NOT_FOUND: 'Owner with this id not found',
     PAGE_NOT_FOUND: 'Page not found.',
     PARAMS: 'params',
     PASSWORD_CHANGED: 'Your password was successfully changed',
