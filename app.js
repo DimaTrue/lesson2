@@ -17,7 +17,7 @@ const swaggerJson = require('./docs/swagger.json');
 
 const app = express();
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJson, { explorer: true }));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJson));
 app.use(cors({ origin: _configureCors }));
 app.use(rateLimit({
     windowMs: configs.RATE_LIMIT_PERIOD,

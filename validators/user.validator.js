@@ -22,8 +22,8 @@ const getUsersQueryValidator = Joi.object({
     email: Joi.string().regex(constants.EMAIL_REGEXP).trim(),
     role: Joi.string().trim(),
     name: Joi.string().trim(),
-    'age.lte': Joi.string().trim(),
-    'age.gte': Joi.string().trim(),
+    'age.lte': Joi.number().integer().min(6).max(110),
+    'age.gte': Joi.number().integer().min(6).max(110),
 });
 
 module.exports = {
