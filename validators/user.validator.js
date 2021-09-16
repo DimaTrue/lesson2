@@ -17,7 +17,13 @@ const userIdParamsValidator = Joi.object({
 
 const getUsersQueryValidator = Joi.object({
     page: Joi.string().trim().required(),
-    perPage: Joi.string().trim().required()
+    perPage: Joi.string().trim().required(),
+    order: Joi.string().trim(),
+    email: Joi.string().regex(constants.EMAIL_REGEXP).trim(),
+    role: Joi.string().trim(),
+    name: Joi.string().trim(),
+    'age.lte': Joi.string().trim(),
+    'age.gte': Joi.string().trim(),
 });
 
 module.exports = {

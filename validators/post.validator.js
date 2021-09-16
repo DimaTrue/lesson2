@@ -25,7 +25,9 @@ const userIdAndPostIdValidator = Joi.object({
 
 const getPostsQueryValidator = Joi.object({
     page: Joi.string().trim().required(),
-    perPage: Joi.string().trim().required()
+    perPage: Joi.string().trim().required(),
+    title: Joi.string().trim(),
+    content: Joi.string().trim(),
 });
 
 const getPostsByUserQueryValidator = Joi.object({

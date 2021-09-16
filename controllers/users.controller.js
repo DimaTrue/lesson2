@@ -1,16 +1,13 @@
 const { User, Post, OAuth } = require('../models');
 const { userNormalizator } = require('../utils');
 const { dbTables: { USER }, statusCodes } = require('../configs');
+const { userService } = require('../services');
 
 const getUsersListController = async (req, res, next) => {
     try {
-        const { page, perPage } = req.query;
+        const data = await userService.findAllUsers(req.query);
 
-        const users = await User.find().limit(+perPage).skip((page - 1) * perPage);
-
-        const responseUsersArr = users.map((user) => userNormalizator(user));
-
-        res.json({ users: responseUsersArr });
+        res.json(data);
     } catch (err) {
         next(err);
     }

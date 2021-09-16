@@ -1,13 +1,12 @@
 const { Post, User } = require('../models');
 const { dbTables: { USER }, statusCodes } = require('../configs');
+const { postService } = require('../services');
 
 const getAllPostsController = async (req, res, next) => {
     try {
-        const { page, perPage } = req.query;
+        const data = await postService.findAllPosts(req.query);
 
-        const posts = await Post.find().limit(+perPage).skip((page - 1) * perPage);
-
-        res.json({ posts });
+        res.json(data);
     } catch (err) {
         next(err);
     }

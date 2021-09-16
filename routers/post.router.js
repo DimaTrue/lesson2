@@ -23,7 +23,9 @@ const {
     userIdParamsValidator
 } = require('../validators');
 
-router.get('/', validateIncomingData(getPostsQueryValidator, strings.QUERY), getAllPostsController);
+router.get('/',
+    validateIncomingData(getPostsQueryValidator, strings.QUERY),
+    getAllPostsController);
 
 router.get('/:post_id',
     validateIncomingData(postIdParamsValidator, strings.PARAMS),

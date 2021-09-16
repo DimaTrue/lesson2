@@ -1,9 +1,7 @@
-const emailService = require('./email.service');
-const passwordService = require('./password.service');
-const jwtService = require('./jwt.service');
-
 module.exports = {
-    emailService,
-    jwtService,
-    passwordService
+    emailService: require('./email.service'),
+    jwtService: require('./jwt.service'),
+    passwordService: require('./password.service'),
+    userService: require('./user.service'),
+    postService: require('./post.service')
 };

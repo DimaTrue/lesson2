@@ -10,7 +10,9 @@ const {
     checkAccessToken, isEntityExistInDB, isUserAllowedForAction, throwErrorIfEntityNotExist, validateIncomingData
 } = require('../middlewares');
 
-router.get('/', validateIncomingData(getUsersQueryValidator, strings.QUERY), getUsersListController);
+router.get('/',
+    validateIncomingData(getUsersQueryValidator, strings.QUERY),
+    getUsersListController);
 
 router.put('/:user_id',
     validateIncomingData(userIdParamsValidator, strings.PARAMS),
