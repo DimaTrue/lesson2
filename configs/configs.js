@@ -19,6 +19,7 @@ module.exports = {
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '612f8e91ef4212bcf103c29bref',
     RESET_TOKEN_LIFE: '2h',
     RESET_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '2bcf103c29bref612f8e91ef421',
+    SENTRY_DSN: process.env.SENTRY_DSN,
     SUPER_ADMIN_AGE: process.env.SUPER_ADMIN_AGE,
     SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL,
     SUPER_ADMIN_NAME: process.env.SUPER_ADMIN_NAME,

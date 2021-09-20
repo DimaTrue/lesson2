@@ -13,11 +13,11 @@ const { authRouter, userRouter, postRouter } = require('./routers');
 const { configs, statusCodes, strings } = require('./configs');
 const { createSuperAdminIfNotExist } = require('./utils');
 const cronJobs = require('./cron');
+const Sentry = require('./logger/Sentry');
 const swaggerJson = require('./docs/swagger.json');
 
 const app = express();
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJson));
 app.use(cors({ origin: _configureCors }));
 app.use(rateLimit({
     windowMs: configs.RATE_LIMIT_PERIOD,
@@ -73,6 +73,10 @@ function _configureCors(origin, callback) {
     return callback(null, true);
 }
 
+app.use(Sentry.Handlers.requestHandler());
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJson));
+
 app.use('/auth', authRouter);
 
 app.use('/users', userRouter);
@@ -80,6 +84,11 @@ app.use('/users', userRouter);
 app.use('/posts', postRouter);
 
 app.use(() => { throw new ErrorHandler(statusCodes.NOT_FOUND, strings.PAGE_NOT_FOUND); });
+
+app.use(Sentry.Handlers.errorHandler({
+
+    shouldHandleError: (error) => error.status === 404 || error.status === 500
+}));
 
 app.use(_errorHandler);
 
