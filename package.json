@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "pm2 kill && pm2 start app.js --watch --name main-api-service",
+    "start:prod": "pm2 kill && pm2 start app.js --watch --name main-api-service",
+    "start": "node app.js",
     "pm2list": "pm2 list",
     "pm2kill": "pm2 kill",
     "dev": "nodemon app.js"
