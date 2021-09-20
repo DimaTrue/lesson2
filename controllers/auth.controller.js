@@ -10,15 +10,9 @@ const {
 
 const signUpController = async (req, res, next) => {
     try {
-        const {
-            name, age, email, password, role
-        } = req.body;
+        const { name, email } = req.body;
 
-        const hashPassword = await passwordService.createHash(password);
-
-        let user = await User.create({
-            name, age, email, role, password: hashPassword
-        });
+        let user = await User.createWithHashPassword(req.body);
 
         if (req.files && req.files.avatar) {
             const { _id } = user;

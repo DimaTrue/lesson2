@@ -1,5 +1,8 @@
 const { Schema, model } = require('mongoose');
 
+const { createHash } = require('../services/password.service');
+const { nameNormalizator } = require('../utils/user.util');
+
 const {
     constants, dbTables: { POST, USER }, roles, strings
 } = require('../configs');
@@ -79,5 +82,17 @@ const userSchema = new Schema({
         type: String,
     }
 }, { timestamps: true });
+
+userSchema.statics = {
+    async createWithHashPassword(userObject) {
+        const hashPassword = await createHash(userObject.password);
+
+        return this.create({
+            ...userObject,
+            password: hashPassword,
+            name: nameNormalizator(userObject.name)
+        });
+    }
+};
 
 module.exports = model(USER, userSchema);
